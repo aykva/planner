@@ -1,0 +1,1556 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>sytm</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%8C%B1%3C/text%3E%3C/svg%3E">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&family=Instrument+Serif&display=swap">
+<style>
+:root{--bg:#f6f5f0;--card:#fdfcf9;--ink:#4a2c20;--mute:#6a4d41;--acc:#3b3e8f;--acc-ink:#fff;--gold:#de6f66;--head:#2f5b4e;--olive:#cbc872;--line:#ddd8cd;--soft:#e2d9ec;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root[data-theme="auto-dark"]{--bg:#141b1d;--card:#1c2528;--ink:#e8efee;--mute:#9bacb0;--acc:#5db3ab;--acc-ink:#0e1a1b;--gold:#e8b455;--line:#2d3b3f;--soft:#243236}}
+:root[data-theme="dark"]{--bg:#141b1d;--card:#1c2528;--ink:#e8efee;--mute:#9bacb0;--acc:#5db3ab;--acc-ink:#0e1a1b;--gold:#e8b455;--line:#2d3b3f;--soft:#243236}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background-color:var(--bg);background-image:linear-gradient(rgba(64,26,11,.06) 1px,transparent 1px),linear-gradient(90deg,rgba(64,26,11,.06) 1px,transparent 1px);background-size:24px 24px;color:var(--ink);font:400 16px/1.55 Inter,system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+main{max-width:560px;margin:0 auto;padding:20px 16px 40px;zoom:.9}
+h1,h2{font-family:"Instrument Serif",Georgia,serif;font-weight:400;letter-spacing:0;color:var(--head,#2f5b4e);margin:0}
+h1{font-size:clamp(2.2rem,9vw,3rem);line-height:1.1}
+h2{font-size:1.7rem;line-height:1.15;margin-bottom:8px}
+.sub{color:var(--mute);margin:6px 0 18px}
+nav{display:flex;gap:4px;border-bottom:1px solid var(--line);margin-bottom:18px;overflow-x:auto}
+nav button{background:none;border:0;border-bottom:3px solid transparent;color:var(--mute);font:inherit;font-weight:600;padding:10px 12px;cursor:pointer;white-space:nowrap}
+nav button[aria-selected="true"]{color:var(--ink);border-color:var(--gold)}
+section{display:none}section.on{display:block}
+.card{position:relative;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:16px;margin-bottom:14px}
+.one{border-left:8px solid var(--gold);padding:18px 16px 18px 18px}
+.one .big{font-size:1.2rem;font-weight:600}
+label{display:block;font-size:.9rem;color:var(--mute);margin:10px 0 4px}
+input[type=text],input[type=time],input[type=number],textarea,select{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+input:focus-visible,textarea:focus-visible,select:focus-visible,button:focus-visible{outline:3px solid var(--acc);outline-offset:2px}
+.row{display:flex;gap:10px;align-items:center}
+.row input[type=text]{flex:1}
+input[type=checkbox]{width:24px;height:24px;accent-color:var(--acc);flex:none}
+.btn{background:var(--acc);color:var(--acc-ink);border:0;border-radius:8px;font:inherit;font-weight:600;padding:10px 16px;cursor:pointer}
+.btn.alt{background:var(--soft);color:var(--ink)}
+.done{text-decoration:line-through;color:var(--mute)}
+.later li{display:flex;justify-content:space-between;gap:10px;align-items:center;padding:8px 0;border-bottom:1px solid var(--line)}
+.later ul{list-style:none;margin:8px 0 0;padding:0}
+.later button{font-size:.85rem;padding:6px 10px}
+.clock{font-family:Inter,system-ui,sans-serif;font-size:4.5rem;font-weight:400;text-align:center;margin:8px 0;font-variant-numeric:tabular-nums}
+.btns{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:8px}
+.res{font-size:1.1rem;margin-top:14px;padding:12px;background:var(--soft);border-radius:8px}
+.dots{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0}
+.dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--line);font-size:.7rem;display:grid;place-items:center;color:var(--mute)}
+.dot.y{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.msg{color:var(--mute);margin:8px 0 0}
+.wrow{display:flex;gap:10px;align-items:baseline;padding:7px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.wrow b{min-width:58px}
+textarea{resize:vertical}
+.vz{margin:16px 0}.vz h3{font:400 1.15rem "Instrument Serif",Georgia,serif;margin:0 0 8px;color:var(--head,#2f5b4e)}
+.grid{display:grid;grid-template-columns:64px repeat(7,1fr);gap:5px;align-items:center}
+.grid .l{font-size:.8rem;color:var(--mute)}
+.grid .h{text-align:center;font-size:.75rem;color:var(--mute)}
+.grid .c{height:26px;border-radius:6px;background:var(--soft);display:grid;place-items:center;font-size:.75rem;color:var(--mute)}
+.grid .c.y{background:var(--acc);color:var(--acc-ink);font-weight:600}
+.grid .c.o{background:var(--olive,#C9C444);color:#401A0B;font-weight:600}
+.grid .c.g{background:var(--gold);color:#401A0B;font-weight:600}
+.rings{display:flex;gap:18px;flex-wrap:wrap}
+.ring{text-align:center;font-size:.82rem;color:var(--mute)}
+svg text{fill:var(--mute);font-size:11px;font-weight:400;font-family:Inter,system-ui,sans-serif}
+#note{background:#e6e3a6;color:#4a2c20;padding:20px 16px 16px;margin:0 0 20px;border-radius:2px 2px 14px 2px;transform:rotate(-1.2deg);box-shadow:0 6px 14px rgba(74,44,32,.18);max-width:260px;position:relative}
+#note::before{content:"";position:absolute;top:-9px;left:50%;width:70px;height:18px;margin-left:-35px;background:rgba(222,111,102,.55);transform:rotate(2deg)}
+#note h2{margin-bottom:4px}
+#note ul{list-style:none;margin:6px 0 0;padding:0}
+#note li button{display:flex;gap:10px;align-items:flex-start;width:100%;background:none;border:0;padding:6px 0;font:inherit;color:inherit;text-align:left;cursor:pointer}
+#note .bx{flex:none;width:18px;height:18px;border:2px solid #4a2c20;border-radius:4px;margin-top:2px;display:grid;place-items:center;font-size:12px;line-height:1}
+#note li.dn .bx{background:#4a2c20;color:#e6e3a6}
+#note li.dn .t{text-decoration:line-through;opacity:.6}
+#note .nm{font-size:.85rem;margin:8px 0 0;opacity:.85}
+#dl{list-style:none;margin:8px 0 0;padding:0}
+#dl li{display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:8px 0;border-bottom:1px solid var(--line)}
+#dl .dt{flex:1;min-width:150px}
+#dl .btn{font-size:.85rem;padding:6px 10px}
+#pep{position:relative;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:20px 20px 18px;margin-bottom:14px;color:var(--ink);font-size:1.05rem;line-height:1.7}
+#pep h2{margin-bottom:2px}
+#pep .pdate{color:var(--mute);font-size:.9rem;line-height:1.4;margin-bottom:6px}
+#pep h3{font:400 1.35rem/1.2 "Instrument Serif",Georgia,serif;color:var(--head,#2f5b4e);margin:16px 0 8px}
+#pep p{margin:0 0 12px}
+#pep p:last-child{margin-bottom:0}
+#pep .pq{background:var(--soft);border-left:6px solid var(--gold);border-radius:6px;padding:6px 16px}
+#pep .pq p{font-family:"Instrument Serif",Georgia,serif;font-size:1.4rem;line-height:1.3;margin:14px 0}
+footer{position:relative;color:var(--mute);font-size:.88rem;margin-top:24px;border-top:1px solid var(--line);padding-top:14px}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+[hidden]{display:none!important}
+.seg{display:flex;gap:6px;flex-wrap:wrap;margin:12px 0 4px}
+.seg button{font:inherit;font-weight:600;font-size:.9rem;padding:7px 12px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--ink);cursor:pointer}
+.seg button[aria-pressed="true"]{background:var(--acc);border-color:var(--acc);color:var(--acc-ink)}
+.ig{column-width:190px;column-gap:12px;margin-top:12px}
+.ii{break-inside:avoid;background:var(--card);border:1px solid var(--line);border-radius:10px;padding:12px;margin:0 0 12px}
+.ii img{width:100%;border-radius:6px;display:block;margin-bottom:8px}
+.ii .tag{display:inline-block;font-size:.75rem;line-height:1.4;padding:2px 8px;border-radius:999px;background:var(--soft);margin:0 6px 8px 0}
+.ii .tag.be{background:var(--olive,#cbc872)}
+.ii h4{font:600 1rem/1.3 Inter,system-ui,sans-serif;margin:0 0 4px;word-break:break-word}
+.ii a{display:block;color:var(--acc);font-size:.85rem;word-break:break-all}
+.ii .nt{font-family:"Instrument Serif",Georgia,serif;font-size:1.3rem;line-height:1.3;margin:0 0 6px;white-space:pre-wrap;word-break:break-word}
+.ii .rm{background:none;border:0;color:var(--mute);font:inherit;font-size:.8rem;text-decoration:underline;cursor:pointer;padding:6px 0 0}
+#ispot .ii{margin:14px 0 0;border-left:6px solid var(--gold)}
+input[type=date],input[type=month]{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+.fgrid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.xbig{font:400 2.1rem/1.1 "Instrument Serif",Georgia,serif;color:var(--head,#2f5b4e)}
+.bar{height:12px;border-radius:999px;background:var(--soft);overflow:hidden;margin:10px 0}
+.bar .fill{height:100%;background:var(--acc);border-radius:999px}
+.bar .fill.warn{background:var(--olive,#cbc872)}
+.bar .fill.over{background:var(--gold)}
+.frow{display:grid;grid-template-columns:84px 1fr auto;gap:10px;align-items:center;font-size:.9rem;padding:3px 0}
+.frow .b{height:10px;background:var(--soft);border-radius:999px;overflow:hidden}
+.frow .b i{display:block;height:100%;background:var(--acc);border-radius:999px}
+.xl{list-style:none;margin:10px 0 0;padding:0}
+.xl li{display:flex;gap:8px;align-items:baseline;padding:8px 0;border-bottom:1px solid var(--line);flex-wrap:wrap}
+.xl .am{margin-left:auto;font-weight:600}
+.xl .tag{font-size:.75rem;line-height:1.4;padding:2px 8px;border-radius:999px;background:var(--soft)}
+.xl .tag.ok{background:var(--olive,#cbc872)}
+.xl .tag.no{background:var(--gold);color:var(--ink)}
+.xl .rm{background:none;border:0;color:var(--mute);font:inherit;font-size:.8rem;text-decoration:underline;cursor:pointer;padding:4px 0}
+.xl .row2{display:flex;gap:8px;align-items:baseline;width:100%}
+.xl .row2 strong{flex:1;word-break:break-word}
+.xl .nt2{width:100%;color:var(--mute);font-size:.9rem}
+.xl li.dn strong{text-decoration:line-through;opacity:.65}
+.xl a{color:var(--acc);font-size:.85rem;word-break:break-all}
+.wb::before{content:"";position:absolute;inset:0;border-radius:5px;z-index:0;pointer-events:none;background:repeating-linear-gradient(92deg,rgba(80,45,15,.11) 0 2px,transparent 2px 11px)}
+.pn{position:relative;padding:18px 12px 10px;border-radius:3px;box-shadow:0 3px 6px rgba(40,20,10,.32);color:#3b2418;min-width:0}
+.pn.pap{background:#fbf6ea}
+.pn.pol{background:#fff;padding:14px 9px 10px}
+.pn.sn0{background:#f7c2d0}.pn.sn1{background:#c8dff1}.pn.sn2{background:#f6e8a4}.pn.sn3{background:#cfe9d6}
+.pn img{width:100%;display:block;margin:0 0 6px;border-radius:1px}
+.pn .cap{margin:0 0 6px;font-size:.85rem;line-height:1.35}
+.pn h4{font:600 .95rem/1.3 Inter,system-ui,sans-serif;margin:0 0 4px;word-break:break-word}
+.pn a{display:block;font-size:.8rem;color:#3b3e8f;word-break:break-all;margin-bottom:6px}
+.pn .nt{font-family:"Instrument Serif",Georgia,serif;font-size:1.4rem;line-height:1.2;margin:0 0 8px;white-space:pre-wrap;word-break:break-word}
+.pn .tag{display:inline-block;font-size:.68rem;line-height:1.45;padding:1px 7px;border-radius:999px;background:rgba(255,255,255,.72);margin:0 4px 4px 0}
+.pn .rm{display:block;background:none;border:0;color:rgba(59,36,24,.7);font:inherit;font-size:.75rem;text-decoration:underline;cursor:pointer;padding:2px 0 0}
+.pinw i{display:block;width:24px;height:24px;background:#f5cf43;clip-path:polygon(50% 0%,61% 35%,98% 35%,68% 57%,79% 91%,50% 70%,21% 91%,32% 57%,2% 35%,39% 35%)}
+.pinw.be i{background:#f08a8a}
+#ispot .pn{max-width:230px;margin:20px auto 6px}
+.heart{color:var(--gold);font-family:Inter,system-ui,sans-serif;font-size:1.6rem;line-height:1.1}
+.fab{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;align-items:flex-end;gap:10px;z-index:20}
+.fabb{width:56px;height:56px;border-radius:50%;border:0;background:var(--gold);color:#fff;font:400 2rem/1 Inter,system-ui,sans-serif;cursor:pointer;box-shadow:0 4px 10px rgba(60,30,20,.35)}
+.fab .btn{box-shadow:0 3px 8px rgba(60,30,20,.25)}
+.modal{position:fixed;inset:0;background:rgba(40,25,15,.45);display:flex;align-items:center;justify-content:center;z-index:50;padding:14px}
+.mbox{background:var(--card);border-radius:12px;padding:18px;width:100%;max-width:480px;max-height:90vh;overflow:auto;box-shadow:0 10px 30px rgba(0,0,0,.35)}
+.wb{position:relative;padding:10px;border-radius:5px;margin-top:12px;background:linear-gradient(135deg,#8d6238,#6f4a27 50%,#8a5f35);box-shadow:0 6px 14px rgba(60,35,15,.35),inset 0 0 0 1px rgba(255,255,255,.15)}
+.wf{position:relative;z-index:1;border-radius:2px;padding:0;min-height:300px;overflow:hidden;box-shadow:inset 0 3px 12px rgba(40,20,5,.5);background-color:#cfa56e;background-image:repeating-linear-gradient(0deg,rgba(90,52,20,.55) 0 2px,transparent 2px 150px),repeating-linear-gradient(0deg,rgba(255,235,200,.12) 0 1px,rgba(100,60,25,.12) 1px 2px,transparent 2px 6px),repeating-linear-gradient(0deg,rgba(120,75,30,.07) 0 11px,transparent 11px 23px),linear-gradient(90deg,rgba(255,255,255,.07),rgba(0,0,0,.07) 60%,rgba(255,255,255,.05))}
+.pg{display:block;position:relative;height:320px}
+.pg .pn{position:absolute;width:150px}
+.pg .pn.pol{width:168px}
+.pn.lift{box-shadow:0 12px 22px rgba(40,20,10,.45)}
+.pinw{position:absolute;top:-20px;left:50%;margin-left:-20px;width:40px;height:40px;display:grid;place-items:center;filter:drop-shadow(0 2px 1.5px rgba(0,0,0,.4));z-index:2;touch-action:none;cursor:grab}
+.wbempty{position:absolute;top:34px;left:50%;width:min(300px,80%);margin:0;transform:translateX(-50%) rotate(-1deg);background:#fbf6ea;color:#3b2418;border-radius:3px;padding:14px;text-align:center;box-shadow:0 3px 6px rgba(40,20,10,.3)}
+body.bm h1,body.bm main>.sub,body.bm #side,body.bm footer{display:none}
+body.bm main{zoom:1;max-width:none;padding:0;display:flex;flex-direction:column;min-height:100vh}
+body.bm nav{margin:0;padding:8px 10px 0;background:var(--bg);border-bottom:0}
+body.bm #insp{flex:1;display:flex}
+body.bm #insp .wb{flex:1;display:flex;margin:0;border-radius:0}
+body.bm #insp .wf{flex:1;min-height:0}
+body.bm #insp .pg{padding-bottom:96px}
+@media (min-width:1200px){#side{position:fixed;top:28px;left:calc(50% + 310px);width:300px;max-height:calc(100vh - 56px);overflow-y:auto;overflow-x:hidden;padding:14px 6px 6px}#note{max-width:none;margin:0}}
+@media (min-width:1200px){#pep{position:fixed;top:44px;right:calc(50% + 310px);width:300px;margin:0}#pt{max-height:calc(100vh - 190px);overflow-y:auto;overflow-x:hidden;padding-right:2px}}
+.pg .pn{cursor:pointer}
+.pn.sel{outline:2px dashed #de6f66;outline-offset:3px}
+.pinw{transform:scale(calc(1 / var(--s,1)))}
+.ctl{position:fixed;left:0;right:0;bottom:0;z-index:40;max-width:640px;margin:0 auto;background:var(--card);border-radius:14px 14px 0 0;box-shadow:0 -6px 20px rgba(0,0,0,.3);padding:12px 16px calc(14px + env(safe-area-inset-bottom,0px));max-height:58vh;overflow:auto}
+.ctl .crow{display:flex;align-items:center;justify-content:space-between;gap:10px}
+.ctl h3{font:400 1.3rem/1.2 "Instrument Serif",Georgia,serif;color:var(--head,#2f5b4e);margin:0}
+.ctl input[type=range]{width:100%;accent-color:var(--acc);padding:0}
+.ctl .rl{display:flex;justify-content:space-between;font-size:.9rem;color:var(--mute);margin-top:10px}
+#insp.editing .fab{display:none}
+#insp.editing .wb{padding-bottom:300px}
+.sync{font-size:.8rem;margin:-10px 0 14px}
+.robar{background:var(--soft);border-radius:8px;padding:8px 12px;margin:0 0 14px;font-size:.9rem}
+body.bm .robar{display:none}
+body.ro #iopen{display:none}
+.hmark{position:absolute;right:6px;bottom:4px;color:#de6f66;font-size:1.15rem;line-height:1;filter:drop-shadow(0 1px 1px rgba(0,0,0,.25))}
+.pn .hfrom{display:block;font-size:.65rem;opacity:.7;margin-top:6px}
+.pn .hslip{background:#fff6b8;border-radius:2px;padding:4px 8px;margin:2px 0 0;font-size:.8rem;line-height:1.3;box-shadow:0 1px 3px rgba(0,0,0,.2);transform:rotate(1deg)}
+.letter .hl-head{display:flex;gap:14px;align-items:flex-end}
+.flowers svg{display:block;width:104px;height:auto}
+.to{font-size:2.1rem;line-height:1.05}
+.hnote{margin:14px 0 6px;padding:10px 14px;border-left:6px solid var(--gold);background:var(--soft);border-radius:6px;font-family:"Instrument Serif",Georgia,serif;font-size:1.45rem;line-height:1.3}
+.letter h3{font:400 1.3rem/1.2 "Instrument Serif",Georgia,serif;color:var(--head,#2f5b4e);margin:16px 0 0}
+.hs{position:relative;background:#f6e8a4;border-radius:3px;padding:12px;margin:10px 0 0;box-shadow:0 2px 5px rgba(60,35,15,.25);font-family:"Instrument Serif",Georgia,serif;font-size:1.25rem;line-height:1.25;white-space:pre-wrap;transform:rotate(-.8deg)}
+.hs:nth-of-type(even){background:#f7c2d0;transform:rotate(.9deg)}
+.hs .rm{display:block;background:none;border:0;font:400 .75rem Inter,system-ui,sans-serif;color:rgba(59,36,24,.7);text-decoration:underline;cursor:pointer;padding:6px 0 0}
+.hb-tools{display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin:10px 0}
+.sw{width:30px;height:30px;border-radius:50%;border:2px solid var(--line);cursor:pointer;padding:0}
+.sw[aria-pressed="true"]{outline:3px solid var(--acc);outline-offset:2px}
+.hb-tools input[type=range]{width:110px;accent-color:var(--acc);padding:0}
+#hb{display:block;width:100%;height:auto;aspect-ratio:1000/640;background:#fffef9;border:1px solid var(--line);border-radius:8px;touch-action:none;cursor:crosshair}
+.bsync{position:absolute;left:0;right:0;top:0;text-align:center;font-size:.62rem;line-height:10px;color:rgba(255,235,200,.9);z-index:3;pointer-events:none}
+.savebar{background:#fbe3df;border:1px solid #de6f66;color:#4a2c20;border-radius:10px;padding:10px 12px;margin:0 0 14px;font-size:.9rem;line-height:1.4}
+.savebar .btn{font-size:.8rem;padding:4px 10px;margin-left:4px}
+body.bm .savebar{margin:0;border-radius:0;border-left:0;border-right:0}
+body.hz main{zoom:1}
+.hnrow{display:flex;gap:12px;align-items:center;margin:14px 0 6px}
+.hnrow .hnote{margin:0;flex:1}
+.dflower svg{display:block;width:64px;height:auto}
+.loading{position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(246,245,240,.94);z-index:95;display:flex;align-items:center;justify-content:center;padding:20px;text-align:center}
+.lbox p{margin:0 0 12px}
+.hnwrap{flex:1}
+.hnwrap .hnote{margin:0}
+.hnote{white-space:pre-wrap}
+.hnote.empty{background:transparent;border-left-color:var(--line);color:var(--mute);font-family:Inter,system-ui,sans-serif;font-size:1rem}
+.hnrm{display:block;background:none;border:0;color:var(--mute);font:400 .8rem Inter,system-ui,sans-serif;text-decoration:underline;cursor:pointer;padding:6px 0 0}
+body.ro nav button[data-t="exp"]{display:none}
+body.ro #exp{display:none!important}
+input[type=password]{width:100%;font:inherit;color:var(--ink);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:10px 12px}
+</style></head>
+<body>
+<script>
+(function(){
+ var n=0;
+ function show(msg){
+  if(n>2)return;n++;
+  var d=document.createElement('div');d.setAttribute('role','alert');
+  d.style.cssText='position:fixed;left:8px;right:8px;top:8px;z-index:9999;background:#fbe3df;border:1px solid #de6f66;color:#4a2c20;border-radius:10px;padding:10px 12px;font:14px/1.4 system-ui,sans-serif;box-shadow:0 4px 14px rgba(0,0,0,.25)';
+  d.textContent='Something went wrong in this page: '+msg+'  (please copy this message) ';
+  var b=document.createElement('button');b.textContent='Hide';b.style.cssText='margin-left:6px';b.onclick=function(){d.parentNode&&d.parentNode.removeChild(d)};
+  d.appendChild(b);(document.body||document.documentElement).appendChild(d);
+ }
+ window.__report=function(e){show(String((e&&(e.message||e.code))||e))};
+ window.addEventListener('error',function(e){show((e.message||'error')+(e.lineno?' [line '+e.lineno+']':''))});
+ window.addEventListener('unhandledrejection',function(e){var r=e.reason;show('promise: '+String((r&&(r.message||r.code))||r))});
+})();
+</script><main>
+<h1>sytm</h1>
+<p class="sub">One thing at a time. A missed day is information, not a verdict.</p>
+<p class="sub sync" id="sync" role="status"></p>
+<div id="ghset" class="modal" hidden><div class="mbox" role="dialog" aria-label="GitHub settings">
+<div class="row" style="justify-content:space-between"><h2>GitHub settings</h2><button type="button" class="btn alt" id="ghclose">Close</button></div>
+<p class="sub" style="margin:0">Your entries are saved as files in your own GitHub repositories. Tokens stay in this browser and are never sent anywhere except GitHub.</p>
+<div class="seg" id="ghrole" role="group" aria-label="Who is using this"><button type="button" data-v="owner" aria-pressed="true">I&rsquo;m the owner</button><button type="button" data-v="guest" aria-pressed="false">I&rsquo;m a guest</button></div>
+<label for="ghuser">GitHub username (the account that owns the repositories)</label><input type="text" id="ghuser" autocapitalize="none" autocomplete="off" spellcheck="false">
+<label for="ghd">Data repository</label><input type="text" id="ghd" value="sytm-data" autocapitalize="none" spellcheck="false">
+<label for="tkd">Token for the data repository</label><input type="password" id="tkd" autocomplete="off">
+<label for="ghm">Money repository (owner only)</label><input type="text" id="ghm" value="sytm-money" autocapitalize="none" spellcheck="false">
+<label for="tkm">Token for the money repository</label><input type="password" id="tkm" autocomplete="off">
+<label for="ghh">Halwa repository</label><input type="text" id="ghh" value="sytm-halwa" autocapitalize="none" spellcheck="false">
+<label for="tkh">Token for the halwa repository</label><input type="password" id="tkh" autocomplete="off">
+<div class="btns" style="justify-content:flex-start;margin-top:14px"><button type="button" class="btn" id="ghsave">Save and connect</button><button type="button" class="btn alt" id="ghtest">Test connection</button><button type="button" class="btn alt" id="ghout">Disconnect</button></div>
+<p class="msg" id="ghmsg" role="status"></p>
+</div></div>
+<div id="loading" class="loading" hidden><div class="lbox"><p id="lmsg">Loading your saved entries...</p><button type="button" class="btn alt" id="lgo" hidden>Continue without saving</button></div></div>
+<div class="savebar" id="savebar" hidden role="alert"><span id="savemsg"></span> <button type="button" class="btn" id="savefix" hidden>GitHub settings</button> <button type="button" class="btn alt" id="savehide">Hide</button></div>
+<div class="robar" id="robar" hidden>You&rsquo;re viewing as a guest. You can look around, draw on the whiteboard, like pins and leave notes.</div>
+<div id="side">
+<aside id="note" aria-label="Sticky note with today's tasks">
+<h2>To do today</h2>
+<ul id="nl"></ul>
+<p class="nm" id="nm" role="status"></p>
+</aside>
+</div>
+<nav role="tablist">
+<button role="tab" aria-selected="true" data-t="today">Today</button>
+<button role="tab" aria-selected="false" data-t="focus">Focus timer</button>
+<button role="tab" aria-selected="false" data-t="leave">Leave on time</button>
+<button role="tab" aria-selected="false" data-t="anchor">Anchor habit</button>
+<button role="tab" aria-selected="false" data-t="wrap">Weekly wrap-up</button>
+<button role="tab" aria-selected="false" data-t="insp" aria-label="Inspiration board" title="Inspiration board" style="color:var(--gold);font-size:1.15rem">&#9829;</button>
+<button role="tab" aria-selected="false" data-t="exp">Expenses</button>
+<button role="tab" aria-selected="false" data-t="wish">Wishlist</button>
+<button role="tab" aria-selected="false" data-t="halwa">halwa&lt;3</button>
+</nav>
+
+<section id="today" class="on">
+<aside id="pep" aria-label="Today"><h2>Today</h2><div id="pt"></div></aside>
+<div class="card one">
+<h2>The one thing</h2>
+<p class="sub" style="margin:0 0 8px">If only this gets done today, it was a good day.</p>
+<button type="button" class="btn alt" id="yest" hidden style="margin:0 0 8px"></button>
+<div class="row"><input type="checkbox" id="md" aria-label="Done"><input type="text" id="mt" placeholder="What is the one thing?"></div>
+<label for="ms">First physical step (so small it's obvious)</label>
+<input type="text" id="ms" placeholder="e.g. open the document and type the title">
+<label for="mm">Minimum version (counts as done)</label>
+<input type="text" id="mm" placeholder="e.g. 10 minutes">
+</div>
+<div class="card">
+<h2>Two others, at most</h2>
+<div class="row" style="margin-top:8px"><input type="checkbox" id="d1" aria-label="Done"><input type="text" id="t1" placeholder="Optional"></div>
+<div class="row" style="margin-top:8px"><input type="checkbox" id="d2" aria-label="Done"><input type="text" id="t2" placeholder="Optional"></div>
+</div>
+<div class="card">
+<h2>Daily 15</h2>
+<p class="sub" style="margin:0">Things you give at least 15 minutes to every day. Start the timer here and it ticks off when the sprint finishes.</p>
+<ul id="dl"></ul>
+<div class="row" style="margin-top:10px"><input type="text" id="dn" placeholder="Add another daily habit"><button class="btn" id="da">Add</button></div>
+</div>
+<div class="card later">
+<h2>Later list</h2>
+<p class="sub" style="margin:0">Everything else lives here. It's not forgotten, just not today.</p>
+<div class="row" style="margin-top:10px"><input type="text" id="lt" placeholder="Brain-dump a task"><button class="btn" id="la">Add</button></div>
+<ul id="ll"></ul>
+</div>
+</section>
+
+<section id="focus">
+<div class="card">
+<h2>Focus timer</h2>
+<p class="sub" style="margin:0">Short sprints work like a mini deadline. Start with the first step from Today.</p>
+<label for="fh">Working on</label><select id="fh"></select>
+<div class="clock" id="clk" aria-live="off">25:00</div>
+<div class="btns"><button class="btn alt" data-m="10">10 min</button><button class="btn alt" data-m="15">15 min</button><button class="btn alt" data-m="25">25 min</button></div>
+<div class="btns"><button class="btn" id="go">Start</button><button class="btn alt" id="rs">Reset</button></div>
+<p class="msg" id="fm" role="status"></p>
+</div>
+</section>
+
+<section id="leave">
+<div class="card">
+<h2>Leave on time</h2>
+<p class="sub" style="margin:0">Time yourself getting ready once, enter the real number, and this adds a 15 minute cushion for the estimate gap.</p>
+<label for="ar">I need to arrive by</label><input type="time" id="ar">
+<label for="tr">Travel time (minutes)</label><input type="number" id="tr" min="0" inputmode="numeric" placeholder="30">
+<label for="gr">Getting ready actually takes (minutes)</label><input type="number" id="gr" min="0" inputmode="numeric" placeholder="45">
+<div class="res" id="lr" role="status">Fill in the three boxes to see your times.</div>
+</div>
+</section>
+
+<section id="anchor">
+<div class="card">
+<h2>Anchor habit</h2>
+<p class="sub" style="margin:0">One small daily thing that still counts when everything else falls apart.</p>
+<label for="ah">My anchor</label><input type="text" id="ah" placeholder="e.g. 10 minute walk after lunch">
+<div class="btns" style="justify-content:flex-start;margin-top:12px"><button class="btn" id="ad">I did it today</button></div>
+<div class="dots" id="dots" aria-label="Last 14 days"></div>
+<p class="msg" id="am" role="status"></p>
+</div>
+</section>
+
+<section id="wrap">
+<div class="card">
+<h2>Last 7 days</h2>
+<div id="ws" class="res" role="status"></div>
+<div id="wv"></div>
+<div id="wd" style="margin-top:10px"></div>
+<label for="wh">What helped this week?</label><input type="text" id="wh">
+<label for="wc">One thing to change next week</label><input type="text" id="wc">
+<div class="btns" style="justify-content:flex-start;margin-top:12px"><button class="btn" id="wsave">Save this wrap-up</button></div>
+<p class="msg" id="wmsg" role="status"></p>
+</div>
+<div class="card">
+<h2>Week by week</h2>
+<div id="wt"></div>
+<p class="msg" id="wte">Save two or more wrap-ups to see your trend.</p>
+</div>
+<div class="card">
+<h2>Saved wrap-ups</h2>
+<ul id="wl" style="list-style:none;margin:8px 0 0;padding:0"></ul>
+<p class="msg" id="wempty">None yet. Save one at the end of your week.</p>
+</div>
+<div class="card">
+<h2>Backup</h2>
+<p class="sub" style="margin:0">Keep a copy of everything: tasks, history and wrap-ups. Restoring replaces what is on this page now.</p>
+<div class="btns" style="justify-content:flex-start;margin-top:12px"><button class="btn" id="bx">Save backup file</button><button class="btn alt" id="bc">Show backup text</button></div>
+<label for="bt">Backup text (copy it to keep, or paste a backup here to restore)</label>
+<textarea id="bt" rows="4"></textarea>
+<div class="btns" style="justify-content:flex-start;margin-top:10px"><button class="btn alt" id="bi">Restore from text</button><button class="btn alt" id="bp">Restore from file</button><input type="file" id="bf" accept=".json,application/json" hidden></div>
+<p class="msg" id="bm" role="status"></p>
+</div>
+</section>
+
+<section id="insp">
+<div class="wb"><div class="bsync" id="bsync"></div><div class="wf"><div id="ig" class="pg"></div><p class="wbempty" id="ie">Nothing pinned yet. Tap + to add the first thing that inspires you.</p></div></div>
+<div class="fab"><button type="button" class="btn alt" id="irand">Show me one</button><button type="button" class="fabb" id="iopen" aria-label="Add to the board">+</button></div>
+<div id="ictl" class="ctl" hidden role="region" aria-label="Edit pin">
+<div class="crow"><h3>Edit pin</h3><button type="button" class="btn" id="cdone">Done</button></div>
+<p class="msg" id="chim" style="margin:6px 0 0"></p>
+<div id="cfields"></div>
+<p class="msg" id="cmsg" role="status" style="margin:6px 0 0"></p>
+<div class="rl"><label for="csz" style="margin:0">Size</label><span id="cvs">100%</span></div>
+<input type="range" id="csz" min="50" max="220" step="5" value="100">
+<div class="rl"><label for="crot" style="margin:0">Rotate</label><span id="cvr">0&deg;</span></div>
+<input type="range" id="crot" min="-45" max="45" step="1" value="0">
+<div class="btns" style="justify-content:flex-start;margin-top:12px"><button type="button" class="btn alt" id="cflat">Straighten</button><button type="button" class="btn alt" id="cfront">Bring to front</button><button type="button" class="btn alt" id="crm">Remove</button></div>
+</div>
+<div id="hctl" class="ctl" hidden role="region" aria-label="Pin">
+<div class="crow"><h3>This pin</h3><button type="button" class="btn" id="hdone">Done</button></div>
+<div class="btns" style="justify-content:flex-start;margin-top:10px"><button type="button" class="btn alt" id="hlike">&#9825; Like</button></div>
+<label for="hnote2">Leave a note</label><textarea id="hnote2" rows="2" placeholder="Say something sweet about this one"></textarea>
+<p class="msg" id="hmsg" role="status"></p>
+</div>
+<div id="ipanel" class="modal" hidden><div class="mbox" role="dialog" aria-label="Add to the board">
+<div class="row" style="justify-content:space-between"><h2 class="heart" aria-label="Add to the board">&#9829;</h2><button type="button" class="btn alt" id="iclose">Close</button></div>
+<p class="sub" style="margin:0">Dump anything that inspires you: links, pins, songs, videos, quotes, pictures.</p>
+<div class="seg" id="itype" role="group" aria-label="What are you adding"><button type="button" data-v="link" aria-pressed="true">Link</button><button type="button" data-v="note" aria-pressed="false">Note</button><button type="button" data-v="img" aria-pressed="false">Image</button></div>
+<div id="f-link"><label for="it">Title</label><input type="text" id="it" placeholder="A song, article, video or pin name"><label for="iu">Link</label><input type="text" id="iu" inputmode="url" placeholder="Paste a link (YouTube, Spotify, Pinterest, an article...)"></div>
+<div id="f-note" hidden><label for="in">What do you want to remember?</label><textarea id="in" rows="3" placeholder="A quote, a line, a reminder to yourself"></textarea></div>
+<div id="f-img" hidden><label for="ic">Caption (optional)</label><input type="text" id="ic"><div class="btns" style="justify-content:flex-start;margin-top:8px"><button type="button" class="btn alt" id="ifb">Choose image</button><span class="msg" id="ifn" style="margin:0"></span></div><input type="file" id="iff" accept="image/*" hidden></div>
+<div class="btns" style="justify-content:flex-start;margin-top:12px"><button class="btn" id="iadd">Pin it to the board</button></div>
+<p class="msg" id="imsg" role="status"></p>
+</div></div>
+<div id="ispotm" class="modal" hidden><div class="mbox" role="dialog" aria-label="One thing from your board"><div id="ispot"></div><div class="btns" style="margin-top:14px"><button type="button" class="btn" id="ianother">Another</button><button type="button" class="btn alt" id="ispotx">Close</button></div></div></div>
+</section>
+
+<section id="exp">
+<div class="card">
+<h2>Expenses</h2>
+<div class="row" style="margin-bottom:6px"><label for="xm" style="margin:0">Month</label><input type="month" id="xm" style="max-width:200px"></div>
+<div id="xs"></div>
+<div class="fgrid">
+<div><label for="xin">Monthly income</label><input type="number" id="xin" min="0" inputmode="numeric"></div>
+<div><label for="xsv">I save each month</label><input type="number" id="xsv" min="0" inputmode="numeric"></div>
+</div>
+</div>
+<div class="card">
+<h2>Add an expense</h2>
+<div class="fgrid">
+<div><label for="xamt">Amount (&#8377;)</label><input type="number" id="xamt" min="0" step="any" inputmode="decimal" placeholder="250"></div>
+<div><label for="xc">Category</label><select id="xc"></select></div>
+</div>
+<div class="fgrid">
+<div><label for="xn">Note (optional)</label><input type="text" id="xn" placeholder="Lunch, auto, coffee..."></div>
+<div><label for="xd">Date</label><input type="date" id="xd"></div>
+</div>
+<div class="btns" style="justify-content:flex-start;margin-top:12px"><button class="btn" id="xa">Add expense</button></div>
+<p class="msg" id="xmsg" role="status"></p>
+</div>
+<div class="card">
+<h2>Where it went</h2>
+<div id="xcat"></div>
+<ul class="xl" id="xl"></ul>
+<p class="msg" id="xe">No expenses this month yet.</p>
+</div>
+<div class="card">
+<h2>Savings goal</h2>
+<div class="fgrid">
+<div><label for="gn">Goal</label><input type="text" id="gn"></div>
+<div><label for="ga">Target (&#8377;)</label><input type="number" id="ga" min="0" inputmode="numeric"></div>
+</div>
+<div class="fgrid">
+<div><label for="gs">Saved so far (&#8377;)</label><input type="number" id="gs" min="0" inputmode="numeric"></div>
+<div><label for="gb">Needed by</label><input type="month" id="gb"></div>
+</div>
+<div id="gtxt" style="margin-top:12px"></div>
+<div class="row" style="margin-top:10px"><input type="number" id="gadd" min="0" step="any" inputmode="decimal" placeholder="Amount just saved"><button class="btn" id="gaddb">Add to savings</button></div>
+</div>
+</section>
+
+<section id="wish">
+<div class="card">
+<h2>Wishlist</h2>
+<p class="sub" style="margin:0">Park things you want here. Waiting a week before deciding makes the wanting easier to read.</p>
+<div class="fgrid">
+<div><label for="winame">What is it?</label><input type="text" id="winame"></div>
+<div><label for="wiprice">Price (&#8377;)</label><input type="number" id="wiprice" min="0" step="any" inputmode="decimal"></div>
+</div>
+<label for="wilink">Link (optional)</label><input type="text" id="wilink" inputmode="url">
+<label for="winote">Why you want it (optional)</label><input type="text" id="winote">
+<div class="btns" style="justify-content:flex-start;margin-top:12px"><button class="btn" id="wiadd">Add to wishlist</button></div>
+<p class="msg" id="wimsg" role="status"></p>
+</div>
+<div class="card">
+<h2>Waiting list</h2>
+<p class="msg" id="wisum" style="margin:0"></p>
+<ul class="xl" id="wilist"></ul>
+<p class="msg" id="wiempty">Nothing on your wishlist yet.</p>
+</div>
+<div class="card">
+<h2>Got it</h2>
+<ul class="xl" id="wibought"></ul>
+<p class="msg" id="wibe">Nothing bought yet.</p>
+</div>
+</section>
+
+<section id="halwa">
+<div class="card letter">
+<div class="hl-head"><div id="hflow" class="flowers" aria-hidden="true"></div><div><h2 class="to">to my sweetest halwa,</h2><p class="msg" id="hdate" style="margin:4px 0 0"></p></div></div>
+<div class="hnrow"><div id="hflower" class="dflower"></div><div class="hnwrap"><blockquote class="hnote" id="hnote"></blockquote><button type="button" class="rm hnrm" id="hnrm" hidden>Remove this note</button></div></div>
+<div id="hmine"></div>
+<div id="hadd"><label for="hnew">Write him a note</label><textarea id="hnew" rows="2" placeholder="Something sweet for him to find"></textarea><div class="btns" style="justify-content:flex-start;margin-top:8px"><button type="button" class="btn" id="hnadd">Add note</button></div></div>
+</div>
+<div class="card">
+<h2>make more art, cutie</h2>
+<p class="sub" style="margin:0">Draw anything you like. Whatever you draw shows up for both of you.</p>
+<div class="hb-tools" id="hbtools" role="group" aria-label="Drawing tools"></div>
+<canvas id="hb" width="1000" height="640" aria-label="Drawing board"></canvas>
+<div class="btns" style="justify-content:flex-start;margin-top:10px"><button type="button" class="btn alt" id="hbundo">Undo</button><button type="button" class="btn alt" id="hbclr">Clear mine</button><button type="button" class="btn alt" id="hball" hidden>Clear everyone&rsquo;s</button></div>
+<p class="msg" id="hbmsg" role="status"></p>
+</div>
+</section>
+
+<footer>Your entries are saved as files in your own GitHub repositories, and kept in this browser too. <button type="button" class="btn alt" id="savetest" style="font-size:.8rem;padding:4px 10px">Test saving</button> <button type="button" class="btn alt" id="ghopen" style="font-size:.8rem;padding:4px 10px">GitHub settings</button> <span id="savetestmsg"></span> If things feel heavy, Tele-MANAS (14416) is free and open any time.</footer>
+</main>
+<script>
+const $=s=>document.querySelector(s);
+let LSOK=true;const store={get(k,d){try{const v=localStorage.getItem(k);return v?JSON.parse(v):d}catch(e){LSOK=false;return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){LSOK=false}}};
+const ymd=d=>d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0');
+const TD=ymd(new Date());
+let S=store.get('ost1',null)||{};
+S=Object.assign({date:'',m:{t:'',s:'',m:'',d:false},o:[{t:'',d:false},{t:'',d:false}],later:[],anchor:'',days:[],leave:{a:'',t:'',g:''},hist:{},weeks:[],refl:{h:'',c:''},daily:[],dd:{},insp:[],fin:{income:0,save:0,gname:'',gamt:0,gsaved:0,gby:''},exp:[],wish:[]},S);
+function logToday(){
+ const h=S.hist[TD]||{};
+ S.hist[TD]=Object.assign(h,{mt:S.m.t,md:S.m.t.trim()?S.m.d:false,on:S.o.filter(x=>x.t.trim()).length,od:S.o.filter(x=>x.t.trim()&&x.d).length,dn:Object.keys(S.dd[TD]||{}).filter(k=>S.daily.some(y=>y.id===k)).length,dt:S.daily.length});
+}
+let RO=false,DB=null,UID=null,ISOWNER=true;
+const save=(quiet)=>{if(RO)return;if(!quiet)S._ts=Date.now();logToday();store.set('ost1',S);if(!quiet)cloudSoon()};
+
+document.querySelectorAll('nav button').forEach(b=>b.onclick=()=>{
+ document.querySelectorAll('nav button').forEach(x=>x.setAttribute('aria-selected',x===b));
+ document.querySelectorAll('section').forEach(s=>s.classList.toggle('on',s.id===b.dataset.t));
+ if(b.dataset.t==='wrap')drawWrap();
+ document.body.classList.toggle('bm',b.dataset.t==='insp');document.body.classList.toggle('hz',b.dataset.t==='halwa');window.scrollTo(0,0);
+ if(b.dataset.t==='insp')drawInsp();else deselect();
+});
+
+function strike(){$('#mt').classList.toggle('done',S.m.d);$('#t1').classList.toggle('done',S.o[0].d);$('#t2').classList.toggle('done',S.o[1].d);drawNote();drawPep()}
+function fillToday(){
+ $('#mt').value=S.m.t;$('#ms').value=S.m.s;$('#mm').value=S.m.m;$('#md').checked=S.m.d;
+ $('#t1').value=S.o[0].t;$('#d1').checked=S.o[0].d;$('#t2').value=S.o[1].t;$('#d2').checked=S.o[1].d;strike();drawYest();
+}
+const bind=(id,fn)=>$(id).addEventListener(id.includes('#d')||id==='#md'?'change':'input',()=>{fn();save();strike()});
+bind('#mt',()=>S.m.t=$('#mt').value);bind('#ms',()=>S.m.s=$('#ms').value);bind('#mm',()=>S.m.m=$('#mm').value);bind('#md',()=>S.m.d=$('#md').checked);
+bind('#t1',()=>S.o[0].t=$('#t1').value);bind('#d1',()=>S.o[0].d=$('#d1').checked);
+bind('#t2',()=>S.o[1].t=$('#t2').value);bind('#d2',()=>S.o[1].d=$('#d2').checked);
+
+function drawLater(){
+ const ul=$('#ll');ul.textContent='';
+ S.later.forEach((t,i)=>{
+  const li=document.createElement('li');const sp=document.createElement('span');sp.textContent=t;li.appendChild(sp);
+  const w=document.createElement('span');
+  const p=document.createElement('button');p.className='btn alt';p.textContent='Move to today';
+  p.onclick=()=>{
+   if(!S.m.t.trim())S.m.t=t;else if(!S.o[0].t.trim())S.o[0].t=t;else if(!S.o[1].t.trim())S.o[1].t=t;
+   else{alert('Today is full. Finish or clear one first.');return}
+   S.later.splice(i,1);save();fillToday();drawLater();
+  };
+  const x=document.createElement('button');x.className='btn alt';x.textContent='Remove';x.style.marginLeft='6px';
+  x.onclick=()=>{S.later.splice(i,1);save();drawLater()};
+  w.append(p,x);li.appendChild(w);ul.appendChild(li);
+ });
+}
+function addLater(){const v=$('#lt').value.trim();if(!v)return;S.later.push(v);$('#lt').value='';save();drawLater()}
+$('#la').onclick=addLater;$('#lt').addEventListener('keydown',e=>{if(e.key==='Enter')addLater()});
+</script>
+<script>
+// Timer
+let mins=25,left=25*60,end=0,tid=null;
+const fmt=s=>String(Math.floor(s/60)).padStart(2,'0')+':'+String(s%60).padStart(2,'0');
+function setMins(m){mins=m;left=m*60;stop();$('#clk').textContent=fmt(left);$('#go').textContent='Start';$('#fm').textContent=''}
+function stop(){clearInterval(tid);tid=null}
+document.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>setMins(+b.dataset.m));
+$('#rs').onclick=()=>setMins(mins);
+$('#go').onclick=()=>{
+ if(tid){left=Math.max(0,Math.round((end-Date.now())/1000));stop();$('#go').textContent='Resume';return}
+ if(left<=0)left=mins*60;
+ end=Date.now()+left*1000;$('#go').textContent='Pause';$('#fm').textContent='Just the first step. You can stop after this sprint.';
+ tid=setInterval(()=>{
+  const r=Math.max(0,Math.round((end-Date.now())/1000));$('#clk').textContent=fmt(r);document.title=fmt(r)+' | sytm';
+  if(r<=0){stop();left=0;document.title='sytm';S.hist[TD]=S.hist[TD]||{};S.hist[TD].sp=(S.hist[TD].sp||0)+1;save();$('#go').textContent='Start again';$('#fm').textContent='Sprint done. Take a short break. That counts.';const hid=$('#fh').value;if(hid&&mins>=15){S.dd[TD]=S.dd[TD]||{};S.dd[TD][hid]=true;save();drawDaily();$('#fm').textContent='Sprint done, and your daily 15 is ticked off.'}}
+ },500);
+};
+</script>
+<script>
+// Leave on time
+function calc(e){
+ const a=$('#ar').value,t=parseInt($('#tr').value),g=parseInt($('#gr').value);
+ S.leave={a:a,t:$('#tr').value,g:$('#gr').value};if(e&&e.type==='input')save();
+ if(!a||isNaN(t)||isNaN(g)){$('#lr').textContent='Fill in the three boxes to see your times.';return}
+ const [h,m]=a.split(':').map(Number);const base=h*60+m;
+ const hm=x=>{x=((x%1440)+1440)%1440;const hh=Math.floor(x/60),mm=x%60,ap=hh>=12?'PM':'AM';return ((hh+11)%12+1)+':'+String(mm).padStart(2,'0')+' '+ap};
+ const leave=base-t,start=leave-(g+15);
+ $('#lr').innerHTML='';
+ const l1=document.createElement('div');l1.textContent='Start getting ready at '+hm(start);
+ const l2=document.createElement('div');l2.textContent='Walk out the door at '+hm(leave);l2.style.fontWeight='700';
+ $('#lr').append(l1,l2);
+}
+['#ar','#tr','#gr'].forEach(i=>$(i).addEventListener('input',calc));
+</script>
+<script>
+// Anchor
+function drawAnchor(){
+ const box=$('#dots');box.textContent='';
+ const set=new Set(S.days);const now=new Date();
+ for(let i=13;i>=0;i--){
+  const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()-i);const k=ymd(d);
+  const e=document.createElement('div');e.className='dot'+(set.has(k)?' y':'');e.textContent=d.getDate();
+  e.title=k+(set.has(k)?' done':' not done');box.appendChild(e);
+ }
+ const y=new Date(now.getFullYear(),now.getMonth(),now.getDate()-1);
+ const doneT=set.has(TD),doneY=set.has(ymd(y));
+ let msg='';
+ if(doneT)msg='Done for today. That is enough.';
+ else if(!doneY&&S.days.length)msg='Missed yesterday? That is fine. Just do not miss twice, and a tiny version counts.';
+ else msg='Pick the smallest version of your anchor and do that.';
+ $('#am').textContent=msg;$('#ad').textContent=doneT?'Undo today':'I did it today';
+}
+$('#ah').addEventListener('input',()=>{S.anchor=$('#ah').value;save()});
+$('#ad').onclick=()=>{const i=S.days.indexOf(TD);if(i>-1)S.days.splice(i,1);else S.days.push(TD);S.days=S.days.slice(-60);save();drawAnchor()};
+</script>
+<script>
+// Weekly wrap-up
+const DN=['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
+function lastDays(n){const now=new Date(),a=[];for(let i=n-1;i>=0;i--){const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()-i);a.push({k:ymd(d),d:d})}return a}
+function weekStats(){
+ const days=lastDays(7);let md=0,mt=0,od=0,on=0,sp=0,an=0,act=0,dn=0,dt=0;
+ const rows=days.map(x=>{
+  const h=S.hist[x.k]||{};const has=!!((h.mt&&h.mt.trim())||h.on||h.sp||h.dn);
+  const a=S.days.includes(x.k);
+  if(has||a)act++;
+  if(h.mt&&h.mt.trim()){mt++;if(h.md)md++}
+  od+=h.od||0;on+=h.on||0;sp+=h.sp||0;dn+=h.dn||0;dt+=h.dt||0;if(a)an++;
+  return {x:x,h:h,a:a};
+ });
+ return {rows:rows,md:md,mt:mt,od:od,on:on,sp:sp,an:an,dn:dn,dt:dt,act:act,end:days[6].k};
+}
+function drawWrap(){
+ const w=weekStats();
+ const s=$('#ws');s.textContent='';
+ const l1=document.createElement('div');l1.style.fontWeight='700';
+ l1.textContent=w.mt?('One thing done on '+w.md+' of '+w.mt+' days you set one'):'No one thing set this week yet';
+ const l2=document.createElement('div');
+ l2.textContent=w.an+' anchor days, '+w.sp+' focus sprints, '+w.od+' of '+w.on+' extra tasks done'+(w.dt?', '+w.dn+' of '+w.dt+' daily 15s':'');
+ const l3=document.createElement('div');l3.className='msg';
+ l3.textContent=w.act===0?'A quiet week is information, not failure. What got in the way?':w.act<4?'Showing up on '+w.act+' days is a real start. Look at what made those days work.':'You showed up on '+w.act+' of 7 days. Notice what helped.';
+ s.append(l1,l2,l3);
+ const box=$('#wd');box.textContent='';
+ w.rows.forEach(r=>{
+  const row=document.createElement('div');row.className='wrow';
+  const b=document.createElement('b');b.textContent=DN[r.x.d.getDay()]+' '+r.x.d.getDate();
+  const t=document.createElement('span');
+  const mt=r.h.mt&&r.h.mt.trim();
+  t.textContent=mt?((r.h.md?'Done: ':'Not done: ')+r.h.mt):'Nothing set';
+  if(!mt)t.style.color='var(--mute)';
+  const e=document.createElement('span');e.style.marginLeft='auto';e.style.color='var(--mute)';e.style.fontSize='.85rem';
+  e.textContent=[r.a?'anchor':'',r.h.sp?r.h.sp+' sprint'+(r.h.sp>1?'s':''):''].filter(Boolean).join(', ');
+  row.append(b,t,e);box.appendChild(row);
+ });
+ drawViz(w);drawTrend();
+ $('#wh').value=S.refl.h;$('#wc').value=S.refl.c;
+ const ul=$('#wl');ul.textContent='';
+ S.weeks.slice().reverse().forEach(x=>{
+  const li=document.createElement('li');li.style.padding='8px 0';li.style.borderBottom='1px solid var(--line)';
+  const a=document.createElement('div');a.style.fontWeight='600';a.textContent='Week ending '+x.end;
+  const b=document.createElement('div');b.className='msg';b.textContent=x.line;
+  li.append(a,b);
+  if(x.h||x.c){const c=document.createElement('div');c.className='msg';c.textContent=(x.h?'Helped: '+x.h+'. ':'')+(x.c?'Change: '+x.c:'');li.appendChild(c)}
+  ul.appendChild(li);
+ });
+ $('#wempty').style.display=S.weeks.length?'none':'block';
+}
+$('#wh').addEventListener('input',()=>{S.refl.h=$('#wh').value;save()});
+$('#wc').addEventListener('input',()=>{S.refl.c=$('#wc').value;save()});
+$('#wsave').onclick=()=>{
+ const w=weekStats();
+ const line=(w.mt?'One thing done '+w.md+'/'+w.mt+' days. ':'')+w.an+' anchor days, '+w.sp+' sprints, '+w.od+'/'+w.on+' extra tasks.';
+ S.weeks=S.weeks.filter(x=>x.end!==w.end);
+ S.weeks.push({end:w.end,line:line,h:S.refl.h,c:S.refl.c,md:w.md,mt:w.mt,an:w.an,sp:w.sp});S.weeks=S.weeks.slice(-52);
+ S.refl={h:'',c:''};save();drawWrap();$('#wmsg').textContent='Saved. Your notes are cleared for next week.';
+};
+</script>
+<script>
+// Charts
+function el(n,a,t){const e=document.createElementNS('http://www.w3.org/2000/svg',n);for(const k in a)e.setAttribute(k,a[k]);if(t!=null)e.textContent=t;return e}
+function sec(title){const d=document.createElement('div');d.className='vz';const h=document.createElement('h3');h.textContent=title;d.appendChild(h);return d}
+function ring(p,label,color){
+ const C=2*Math.PI*28,d=document.createElement('div');d.className='ring';
+ const s=el('svg',{viewBox:'0 0 70 70',width:'84',height:'84',role:'img','aria-label':label+' '+Math.round(p*100)+' percent'});
+ s.appendChild(el('circle',{cx:35,cy:35,r:28,fill:'none','stroke-width':8,style:'stroke:var(--soft)'}));
+ s.appendChild(el('circle',{cx:35,cy:35,r:28,fill:'none','stroke-width':8,'stroke-linecap':'round',transform:'rotate(-90 35 35)','stroke-dasharray':(p*C)+' '+C,style:'stroke:'+color}));
+ s.appendChild(el('text',{x:35,y:39,'text-anchor':'middle',style:'font-size:13px;font-weight:700;fill:var(--ink)'},Math.round(p*100)+'%'));
+ d.appendChild(s);const l=document.createElement('div');l.textContent=label;d.appendChild(l);return d;
+}
+function drawViz(w){
+ const box=$('#wv');box.textContent='';
+ const rg=sec('This week');const rs=document.createElement('div');rs.className='rings';
+ rs.append(ring(w.mt?w.md/w.mt:0,'One thing done','var(--gold)'),ring(w.an/7,'Anchor days','var(--acc)'),ring(w.on?w.od/w.on:0,'Extra tasks','var(--olive,#C9C444)'));
+ rg.appendChild(rs);box.appendChild(rg);
+ const gd=sec('Day by day');const g=document.createElement('div');g.className='grid';
+ const cell=(t,c)=>{const x=document.createElement('div');x.className='c'+(c?' '+c:'');x.textContent=t;return x};
+ const lab=t=>{const x=document.createElement('span');x.className='l';x.textContent=t;return x};
+ g.appendChild(lab(''));w.rows.forEach(r=>{const x=document.createElement('div');x.className='h';x.textContent=DN[r.x.d.getDay()].slice(0,2);g.appendChild(x)});
+ g.appendChild(lab('One thing'));w.rows.forEach(r=>{const set=r.h.mt&&r.h.mt.trim();g.appendChild(set?(r.h.md?cell('✓','g'):cell('·')):cell(''))});
+ g.appendChild(lab('Anchor'));w.rows.forEach(r=>g.appendChild(r.a?cell('✓','y'):cell('')));
+ g.appendChild(lab('Extras'));w.rows.forEach(r=>g.appendChild(r.h.on?cell((r.h.od||0)+'/'+r.h.on,r.h.od===r.h.on?'o':''):cell('')));
+ g.appendChild(lab('Sprints'));w.rows.forEach(r=>g.appendChild(r.h.sp?cell(r.h.sp,'y'):cell('')));
+ g.appendChild(lab('Daily 15'));w.rows.forEach(r=>g.appendChild(r.h.dn?cell(r.h.dn+'/'+r.h.dt,r.h.dn===r.h.dt?'o':''):cell('')));
+ gd.appendChild(g);box.appendChild(gd);
+ const bs=sec('Focus sprints per day');
+ const mx=Math.max(1,...w.rows.map(r=>r.h.sp||0));
+ const s=el('svg',{viewBox:'0 0 280 120',width:'100%',role:'img','aria-label':'Focus sprints per day'});
+ w.rows.forEach((r,i)=>{const v=r.h.sp||0,hh=v/mx*70,x=12+i*38;
+  s.appendChild(el('rect',{x:x,y:90-hh,width:26,height:Math.max(hh,2),rx:4,style:'fill:'+(v?'var(--acc)':'var(--line)')}));
+  if(v)s.appendChild(el('text',{x:x+13,y:84-hh,'text-anchor':'middle'},v));
+  s.appendChild(el('text',{x:x+13,y:108,'text-anchor':'middle'},DN[r.x.d.getDay()].slice(0,2)));
+ });
+ bs.appendChild(s);box.appendChild(bs);
+}
+function drawTrend(){
+ const ws=S.weeks.filter(x=>typeof x.mt==='number').slice(-12);
+ const box=$('#wt');box.textContent='';
+ $('#wte').style.display=ws.length>=2?'none':'block';
+ if(ws.length<2)return;
+ const W=280,H=130,L=30,R=8,T=10,B=24,n=ws.length;
+ const px=i=>L+i*(W-L-R)/(n-1),py=v=>T+(1-v)*(H-T-B);
+ const s=el('svg',{viewBox:'0 0 '+W+' '+H,width:'100%',role:'img','aria-label':'Weekly trend'});
+ [0,.5,1].forEach(v=>{s.appendChild(el('line',{x1:L,x2:W-R,y1:py(v),y2:py(v),style:'stroke:var(--line)'}));s.appendChild(el('text',{x:L-4,y:py(v)+4,'text-anchor':'end'},Math.round(v*100)+'%'))});
+ const series=[['var(--gold)',x=>x.mt?x.md/x.mt:0],['var(--acc)',x=>x.an/7]];
+ series.forEach(([c,f])=>{
+  s.appendChild(el('polyline',{points:ws.map((x,i)=>px(i)+','+py(f(x))).join(' '),fill:'none','stroke-width':2.5,style:'stroke:'+c}));
+  ws.forEach((x,i)=>s.appendChild(el('circle',{cx:px(i),cy:py(f(x)),r:3.5,style:'fill:'+c})));
+ });
+ ws.forEach((x,i)=>s.appendChild(el('text',{x:px(i),y:H-6,'text-anchor':'middle'},x.end.slice(5))));
+ box.appendChild(s);
+ const k=document.createElement('p');k.className='msg';k.textContent='Red: one thing done. Navy: anchor days out of 7.';box.appendChild(k);
+}
+
+function streak(id){let n=0;const d=new Date();let i=(S.dd[TD]&&S.dd[TD][id])?0:1;for(;i<400;i++){const x=new Date(d.getFullYear(),d.getMonth(),d.getDate()-i);const k=ymd(x);if(S.dd[k]&&S.dd[k][id])n++;else break}return n}
+function setDaily(id,v){S.dd[TD]=S.dd[TD]||{};if(v)S.dd[TD][id]=true;else delete S.dd[TD][id];save();drawDaily()}
+function startDaily(id){$('#fh').value=id;document.querySelector('nav button[data-t="focus"]').click();setMins(15);$('#go').click()}
+function addDaily(){const v=$('#dn').value.trim();if(!v)return;S.daily.push({id:'d'+Date.now(),t:v});$('#dn').value='';save();drawDaily()}
+$('#da').onclick=addDaily;$('#dn').addEventListener('keydown',e=>{if(e.key==='Enter')addDaily()});
+function drawDaily(){
+ const ul=$('#dl'),sel=$('#fh');if(!ul)return;
+ const cur=sel.value;ul.textContent='';sel.textContent='';
+ const o0=document.createElement('option');o0.value='';o0.textContent='Nothing in particular';sel.appendChild(o0);
+ const dn=S.dd[TD]||{};
+ S.daily.forEach(h=>{
+  const o=document.createElement('option');o.value=h.id;o.textContent=h.t;sel.appendChild(o);
+  const li=document.createElement('li');
+  const cb=document.createElement('input');cb.type='checkbox';cb.checked=!!dn[h.id];cb.setAttribute('aria-label','Done today: '+h.t);
+  cb.onchange=()=>setDaily(h.id,cb.checked);
+  const t=document.createElement('span');t.className='dt'+(dn[h.id]?' done':'');t.textContent=h.t;
+  const s=streak(h.id);const st=document.createElement('span');st.className='msg';st.style.margin='0';st.textContent=s>1?s+' day streak':'';
+  const go=document.createElement('button');go.className='btn alt';go.type='button';go.textContent='Start 15 min';go.onclick=()=>startDaily(h.id);
+  const rm=document.createElement('button');rm.className='btn alt';rm.type='button';rm.textContent='Remove';rm.onclick=()=>{S.daily=S.daily.filter(x=>x.id!==h.id);save();drawDaily()};
+  li.append(cb,t,st,go,rm);ul.appendChild(li);
+ });
+ if(!S.daily.length){const p=document.createElement('li');p.className='msg';p.textContent='No daily habits yet. Add one below.';ul.appendChild(p)}
+ sel.value=[...sel.options].some(x=>x.value===cur)?cur:'';
+ drawNote();drawPep();
+}
+function list(a){return a.length<2?a.join(''):a.slice(0,-1).join(', ')+' and '+a[a.length-1]}
+const AFF=["Your inner critic is loud, but loud is not the same as right.", "A rough first attempt beats a perfect plan you never start.", "You do not have to feel ready. Start small and the feeling often follows.", "Done imperfectly still counts. It always counts.", "Being hard on yourself may have helped once. You are allowed to put that down today.", "Talk to yourself the way you would to a good friend carrying what you carry.", "Missing a day does not erase all the days you showed up.", "Fifteen minutes is enough to move something forward.", "You figured a lot out on your own. That took real strength.", "Rest is not the opposite of progress. It is part of it.", "Your worth is not measured by today's to-do list.", "You do not have to fix everything today. Just the next small thing.", "Start with the tiniest version. You can always do more, but you never have to.", "Not everything is a priority. Pick one and let the rest wait.", "When the critic says not good enough, answer: good enough to begin.", "Progress that looks small and boring still adds up.", "You can be a work in progress and a good person at the same time.", "You have kept going through harder things than a to-do list.", "Overwhelm is a signal to shrink the task, not a verdict on you.", "Slow still moves. Go at the pace you can manage today.", "Today's job is not to be impressive. It is to take one step.", "Ask what you would say to a friend who felt this stuck, then say it to yourself.", "A slump is a season, not who you are.", "Big plans start with one ordinary session.", "Wanting to take care of yourself already counts for something.", "Feeling flat does not mean you are failing. It can mean you are tired and carrying a lot.", "A harsh thought about yourself is not a fact. You can notice it and still begin.", "Compare yourself to who you were yesterday, not to anyone else's highlight reel.", "Needing support is not a weakness and it is not a burden.", "You deserve gentleness, especially from yourself.", "Unclench your jaw, drop your shoulders, take one slow breath. Now begin.", "The first step is the hardest. After that, it is just more steps.", "You do not need a perfect system. You need the next small action.", "Some days a small win is the whole win. That is allowed.", "You are already here, looking for ways to help yourself. That is a start."];
+function dayNum(){const d=new Date();return Math.floor(new Date(d.getFullYear(),d.getMonth(),d.getDate()).getTime()/864e5)}
+function drawPep(){
+ const box=$('#pt');if(!box)return;box.textContent='';
+ const el=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;box.appendChild(e);return e};
+ const p=t=>el('p',null,t);
+ el('div','pdate',new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'}));
+ el('h3',null,'Read this first');
+ const q=document.createElement('div');q.className='pq';
+ const n=dayNum();
+ [0,1,2].forEach(k=>{const e=document.createElement('p');e.textContent=AFF[(n*3+k)%AFF.length];q.appendChild(e)});
+ box.appendChild(q);
+ el('h3',null,'Your day');
+ const m=S.m.t.trim(),ex=S.o.filter(x=>x.t.trim()),dl=S.daily,dd=S.dd[TD]||{};
+ const pending=dl.filter(h=>!dd[h.id]);
+ if(!m&&!ex.length&&!dl.length){p('Nothing is set for today yet. Add your one thing and it will show up here.');return}
+ p('Here is today, and it is smaller than it feels.');
+ if(m){
+  if(S.m.d)p('Your one thing, '+m+', is done. That alone made today a good day.');
+  else p('Your one thing is '+m+'. If this is all you do, today still counts.'+(S.m.s.trim()?' Start with this: '+S.m.s+'.':'')+(S.m.m.trim()?' And if the day gets heavy, '+S.m.m+' is enough.':''));
+ }
+ const open=ex.filter(x=>!x.d);
+ if(open.length)p('If you have energy left, you could also do: '+list(open.map(x=>x.t))+'. Only if there is room.');
+ else if(ex.length)p('Your extras are done too. Nicely done.');
+ if(dl.length){
+  if(pending.length)p('Then your daily 15 minutes: '+list(pending.map(h=>h.t.charAt(0).toLowerCase()+h.t.slice(1)))+'. Fifteen minutes is small enough to start right now, and the timer is ready when you are.');
+  else p('Your daily 15 minutes are done. Well done for showing up for the future you are building.');
+ }
+ const all=(!m||S.m.d)&&!open.length&&!pending.length;
+ if(all)p('Everything on your list is done. Rest is part of the plan, so go and enjoy it.');
+}
+function drawNote(){
+ const ul=$('#nl'),mm=$('#nm');if(!ul)return;ul.textContent='';
+ const items=[];
+ if(S.m.t.trim())items.push({t:S.m.t,o:S.m,main:true});
+ S.o.forEach(x=>{if(x.t.trim())items.push({t:x.t,o:x,main:false})});
+ S.daily.forEach(h=>items.push({t:h.t+' (15 min)',o:{d:!!(S.dd[TD]&&S.dd[TD][h.id])},main:false,hid:h.id}));
+ items.forEach(it=>{
+  const li=document.createElement('li');if(it.o.d)li.className='dn';
+  const b=document.createElement('button');b.type='button';b.setAttribute('aria-pressed',it.o.d?'true':'false');
+  const bx=document.createElement('span');bx.className='bx';bx.textContent=it.o.d?'\u2713':'';
+  const t=document.createElement('span');t.className='t';t.textContent=it.t;if(it.main)t.style.fontWeight='600';
+  b.append(bx,t);
+  b.onclick=()=>{if(it.hid){setDaily(it.hid,!it.o.d);return}it.o.d=!it.o.d;save();fillToday()};
+  li.appendChild(b);ul.appendChild(li);
+ });
+ const done=items.filter(i=>i.o.d).length;
+ mm.textContent=!items.length?'Nothing here yet. Add your one thing on the Today tab.':done===items.length?'All done. That is enough for today.':done+' of '+items.length+' done';
+}
+</script>
+<script>
+// Backup
+function backupText(){return JSON.stringify({app:'one-small-thing',v:1,data:S})}
+$('#bc').onclick=()=>{$('#bt').value=backupText();$('#bt').select();$('#bm').textContent='Copy this text and keep it somewhere safe, like a note to yourself.'};
+$('#bx').onclick=()=>{
+ try{const b=new Blob([backupText()],{type:'application/json'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='sytm-backup-'+TD+'.json';document.body.appendChild(a);a.click();setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},500);$('#bm').textContent='Backup downloaded.'}
+ catch(e){$('#bt').value=backupText();$('#bm').textContent='Could not download a file. Copy the text above and keep it somewhere safe.'}
+};
+function restore(txt){
+ try{
+  const o=JSON.parse(txt);if(!o||o.app!=='one-small-thing'||!o.data)throw 0;
+  S=Object.assign(DEFAULTS(),o.data);
+  rollover();
+  save();renderAll();
+  $('#bm').textContent='Restored.';
+ }catch(e){$('#bm').textContent='That does not look like a backup from this page.'}
+}
+$('#bi').onclick=()=>restore($('#bt').value);
+$('#bp').onclick=()=>$('#bf').click();
+$('#bf').addEventListener('change',()=>{const f=$('#bf').files[0];if(!f)return;const r=new FileReader();r.onload=()=>restore(String(r.result));r.readAsText(f)});
+
+</script>
+<script>
+// Inspiration board
+let itype='link';
+function segs(id,cb){document.querySelectorAll('#'+id+' button').forEach(b=>b.onclick=()=>{document.querySelectorAll('#'+id+' button').forEach(x=>x.setAttribute('aria-pressed',x===b));cb(b.dataset.v)})}
+segs('itype',v=>{itype=v;$('#f-link').hidden=v!=='link';$('#f-note').hidden=v!=='note';$('#f-img').hidden=v!=='img'});
+function parseUrl(v){v=(v||'').trim();if(!v)return null;if(!/^[a-z][a-z0-9+.-]*:/i.test(v))v='https://'+v;try{const u=new URL(v);return /^https?:$/.test(u.protocol)?u:null}catch(e){return null}}
+function kindOf(u){const h=u.hostname.replace(/^www\./,'');
+ if(/youtube\.com|youtu\.be|vimeo\.com/.test(h))return 'Video';
+ if(/spotify\.com|soundcloud\.com|music\.apple\.com|bandcamp\.com|deezer\.com/.test(h))return 'Music';
+ if(/pinterest\.|pin\.it/.test(h))return 'Pinterest pin';
+ if(/instagram\.com/.test(h))return 'Instagram';
+ return 'Article or link'}
+function shrink(file){return new Promise((res,rej)=>{const r=new FileReader();r.onerror=()=>rej();r.onload=()=>{const im=new Image();im.onerror=()=>rej();im.onload=()=>{
+ let out='';
+ for(const t of [[520,.8],[480,.72],[400,.65],[320,.6],[240,.55]]){
+  const sc=Math.min(1,t[0]/Math.max(im.width,im.height));const c=document.createElement('canvas');c.width=Math.max(1,Math.round(im.width*sc));c.height=Math.max(1,Math.round(im.height*sc));
+  c.getContext('2d').drawImage(im,0,0,c.width,c.height);out=c.toDataURL('image/jpeg',t[1]);if(out.length<140000)break;
+ }
+ res(out)};im.src=r.result};r.readAsDataURL(file)})}
+$('#ifb').onclick=()=>$('#iff').click();
+$('#iff').addEventListener('change',()=>{const f=$('#iff').files[0];$('#ifn').textContent=f?f.name:''});
+$('#iadd').onclick=async()=>{
+ const m=$('#imsg');m.textContent='';
+ const it={id:'i'+Date.now(),k:itype,at:Date.now(),t:'',u:'',c:'',img:''};
+ if(itype==='link'){const u=parseUrl($('#iu').value);if(!u){m.textContent='Paste a valid link first (it should start with http or https).';return}it.u=u.href;it.t=$('#it').value.trim()||u.hostname.replace(/^www\./,'')}
+ else if(itype==='note'){const v=$('#in').value.trim();if(!v){m.textContent='Write something to remember first.';return}it.t=v}
+ else{const f=$('#iff').files[0];if(!f){m.textContent='Choose an image first.';return}
+  try{it.img=await shrink(f)}catch(e){m.textContent='That image could not be read. Try another file.';return}
+  it.c=$('#ic').value.trim()}
+ {const W=$('#ig').clientWidth||360;autoPos(it,S.insp.length,W);it.z=topZ()+1}
+ S.insp.unshift(it);logToday();
+ let ok=true;try{localStorage.setItem('ost1',JSON.stringify(S))}catch(e){ok=false}
+ if(!ok&&it.k==='img'&&!DB){S.insp.shift();m.textContent='This image could not be saved in your browser (storage may be full). Remove something or try a smaller image.';return}
+ $('#it').value='';$('#iu').value='';$('#in').value='';$('#ic').value='';$('#iff').value='';$('#ifn').textContent='';
+ m.textContent='';S._ts=Date.now();cloudSoon();drawInsp();$('#ipanel').hidden=true;
+};
+function hashId(s){let n=0;for(let i=0;i<s.length;i++)n=(n*31+s.charCodeAt(i))>>>0;return n}
+function autoPos(it,idx,W){
+ const iw=150,cols=Math.max(1,Math.floor((W-24)/(iw*0.9)));
+ const n=hashId(it.id||'x');
+ const jx=(n%29)-14,jy=((n>>5)%37)-18;
+ let x=16+(idx%cols)*iw*0.9+jx;x=Math.max(6,Math.min(x,W-iw-6));
+ it.x=x/W;it.y=Math.max(26,36+Math.floor(idx/cols)*165+jy);
+}
+function topZ(){let m=0;S.insp.forEach(i=>{if((i.z||0)>m)m=i.z||0});return m}
+function xfOf(it){const n=hashId(it.id||'x');return {r:typeof it.r==='number'?it.r:((n%9)-4)*0.9,s:typeof it.s==='number'?it.s:1}}
+function applyXf(el,it){const x=xfOf(it);el.style.transformOrigin='50% 0';el.style.transform='rotate('+x.r+'deg) scale('+x.s+')';el.style.setProperty('--s',x.s)}
+function itemEl(it,spot){
+ const d=mkEl('div','pn '+(it.k==='img'?'pol':it.k==='note'?'sn'+(hashId(it.id||'x')%4):'pap'));
+ if(spot)d.style.transform='rotate('+xfOf(it).r+'deg)';else applyXf(d,it);
+ const pw=mkEl('span','pinw');pw.appendChild(document.createElement('i'));d.appendChild(pw);
+ if(it.k==='img'){
+  const im=document.createElement('img');im.src=it.img;im.alt=it.c||'Saved image';d.appendChild(im);
+  if(it.c)d.appendChild(mkEl('p','cap',it.c));
+ }else if(it.k==='note'){
+  d.appendChild(mkEl('p','nt',it.t));
+ }else{
+  const u=parseUrl(it.u);
+  d.appendChild(mkEl('span','tag',u?kindOf(u):'Link'));
+  d.appendChild(mkEl('h4',null,it.t));
+  if(u){const a=mkEl('a',null,u.hostname.replace(/^www\./,'')+' \u2197');a.href=u.href;a.target='_blank';a.rel='noopener noreferrer';d.appendChild(a)}
+ }
+ const hm=himOn(it.id);
+ if(hm.liked)d.appendChild(mkEl('span','hmark','\u2665'));
+ if(hm.note){d.appendChild(mkEl('span','hfrom',ISOWNER?'From him':'Your note'));d.appendChild(mkEl('p','hslip',hm.note))}
+ return d;
+}
+function fitBoard(g){const gr=g.getBoundingClientRect();let H=0;g.querySelectorAll('.pn').forEach(e=>{H=Math.max(H,e.getBoundingClientRect().bottom-gr.top)});g.style.height=Math.max(H+110,320)+'px'}
+function enableDrag(el,it,g){
+ const pin=el.querySelector('.pinw');if(!pin)return;
+ pin.addEventListener('pointerdown',e=>{
+  e.preventDefault();pin.setPointerCapture(e.pointerId);
+  const W=g.clientWidth,sx=e.clientX,sy=e.clientY,ox=it.x*W,oy=it.y;
+  it.z=topZ()+1;el.style.zIndex=it.z;el.classList.add('lift');
+  let nx=ox,ny=oy;
+  const mv=ev=>{const half=el.getBoundingClientRect().width/2,cw=el.offsetWidth/2;nx=Math.max(half-cw,Math.min(ox+ev.clientX-sx,W-half-cw));ny=Math.max(12,oy+ev.clientY-sy);el.style.left=nx+'px';el.style.top=ny+'px'};
+  const up=()=>{pin.removeEventListener('pointermove',mv);pin.removeEventListener('pointerup',up);pin.removeEventListener('pointercancel',up);el.classList.remove('lift');it.x=nx/W;it.y=ny;save();fitBoard(g)};
+  pin.addEventListener('pointermove',mv);pin.addEventListener('pointerup',up);pin.addEventListener('pointercancel',up);
+ });
+}
+let selId=null;
+function elOf(id){return [...document.querySelectorAll('#ig .pn')].find(e=>e.dataset.id===id)}
+function curItem(){return S.insp.find(x=>x.id===selId)}
+function drawInsp(){
+ const g=$('#ig');if(!g)return;
+ const W=g.clientWidth;if(!W)return;
+ g.textContent='';
+ let mz=topZ(),changed=false;
+ for(let k=S.insp.length-1;k>=0;k--){const it=S.insp[k];if(typeof it.x!=='number'){autoPos(it,S.insp.length-1-k,W);changed=true}if(!it.z){it.z=++mz;changed=true}}
+ if(changed)save(true);
+ S.insp.forEach(it=>{
+  const el=itemEl(it);el.dataset.id=it.id;
+  el.style.left=(it.x*W)+'px';el.style.top=it.y+'px';el.style.zIndex=it.z;
+  if(it.id===selId)el.classList.add('sel');
+  el.addEventListener('click',e=>{if(e.target.closest('a'))return;RO?selectHim(it.id):selectItem(it.id)});
+  g.appendChild(el);if(!RO)enableDrag(el,it,g);
+ });
+ fitBoard(g);
+ $('#ie').style.display=S.insp.length?'none':'block';
+ pinStat();
+}
+let tmr=null;
+function later(fn){clearTimeout(tmr);tmr=setTimeout(fn,350)}
+function commitText(){save();drawInsp()}
+function buildFields(it){
+ const f=$('#cfields');f.textContent='';$('#cmsg').textContent='';
+ const add=(label,val,multi,cb)=>{
+  const l=mkEl('label',null,label);const i=document.createElement(multi?'textarea':'input');
+  if(multi)i.rows=3;else i.type='text';i.value=val||'';
+  i.addEventListener('input',()=>cb(i.value));l.appendChild(i);f.appendChild(l);
+ };
+ if(it.k==='link'){
+  add('Title',it.t,false,v=>{it.t=v;later(commitText)});
+  add('Link',it.u,false,v=>{const u=parseUrl(v);if(!u){$('#cmsg').textContent='That link does not look right yet, so it has not been saved.';return}$('#cmsg').textContent='';it.u=u.href;later(commitText)});
+ }else if(it.k==='note'){
+  add('Text',it.t,true,v=>{it.t=v;later(commitText)});
+ }else{
+  add('Caption',it.c,false,v=>{it.c=v.trim();later(commitText)});
+ }
+}
+function selectItem(id){
+ selId=id;const it=curItem();if(!it)return;
+ document.querySelectorAll('#ig .pn').forEach(e=>e.classList.toggle('sel',e.dataset.id===id));
+ const x=xfOf(it);$('#csz').value=Math.round(x.s*100);$('#crot').value=Math.round(x.r);
+ $('#cvs').textContent=Math.round(x.s*100)+'%';$('#cvr').textContent=Math.round(x.r)+'\u00b0';
+ buildFields(it);$('#crm').textContent='Remove';
+ const hm=himOn(id);$('#chim').textContent=(hm.liked?'\u2665 He liked this. ':'')+(hm.note?'He left a note: '+hm.note:'');
+ $('#ictl').hidden=false;$('#insp').classList.add('editing');
+ const el=elOf(id);if(el){const r=el.getBoundingClientRect();if(r.top<70||r.bottom>window.innerHeight-330)window.scrollBy({top:r.top-130,behavior:'smooth'})}
+}
+function deselect(){
+ selId=null;hSel=null;const hc=$('#hctl');if(hc)hc.hidden=true;const c=$('#ictl');if(c)c.hidden=true;const s=$('#insp');if(s)s.classList.remove('editing');
+ document.querySelectorAll('#ig .pn.sel').forEach(e=>e.classList.remove('sel'));
+}
+$('#csz').addEventListener('input',()=>{const it=curItem();if(!it)return;it.s=$('#csz').value/100;$('#cvs').textContent=$('#csz').value+'%';const el=elOf(it.id);if(el)applyXf(el,it);fitBoard($('#ig'))});
+$('#crot').addEventListener('input',()=>{const it=curItem();if(!it)return;it.r=+$('#crot').value;$('#cvr').textContent=$('#crot').value+'\u00b0';const el=elOf(it.id);if(el)applyXf(el,it)});
+$('#csz').addEventListener('change',()=>save());$('#crot').addEventListener('change',()=>save());
+$('#cflat').onclick=()=>{const it=curItem();if(!it)return;it.r=0;$('#crot').value=0;$('#cvr').textContent='0\u00b0';const el=elOf(it.id);if(el)applyXf(el,it);save()};
+$('#cfront').onclick=()=>{const it=curItem();if(!it)return;it.z=topZ()+1;const el=elOf(it.id);if(el)el.style.zIndex=it.z;save()};
+let rmT=null;
+$('#crm').onclick=()=>{
+ const b=$('#crm');
+ if(b.textContent==='Remove'){b.textContent='Tap again to remove';clearTimeout(rmT);rmT=setTimeout(()=>{b.textContent='Remove'},3000);return}
+ S.insp=S.insp.filter(x=>x.id!==selId);save();deselect();drawInsp();
+};
+$('#cdone').onclick=deselect;
+$('#ig').parentNode.addEventListener('click',e=>{if(!e.target.closest('.pn'))deselect()});
+window.addEventListener('resize',()=>{if(document.body.classList.contains('bm'))drawInsp()});
+function showOne(){
+ const sp=$('#ispot');sp.textContent='';
+ if(!S.insp.length)sp.appendChild(mkEl('p','msg','Nothing pinned yet. Add a few things first, then I will pick one for you.'));
+ else sp.appendChild(itemEl(S.insp[Math.floor(Math.random()*S.insp.length)],true));
+ $('#ispotm').hidden=false;
+}
+$('#irand').onclick=showOne;$('#ianother').onclick=showOne;
+$('#ispotx').onclick=()=>{$('#ispotm').hidden=true};
+$('#iopen').onclick=()=>{$('#imsg').textContent='';$('#ipanel').hidden=false};
+$('#iclose').onclick=()=>{$('#ipanel').hidden=true};
+['ipanel','ispotm'].forEach(id=>$('#'+id).addEventListener('click',e=>{if(e.target.id===id)$('#'+id).hidden=true}));
+document.addEventListener('keydown',e=>{if(e.key==='Escape'){$('#ipanel').hidden=true;$('#ispotm').hidden=true;deselect()}});
+</script>
+<script>
+// Money: expenses, savings goal, wishlist
+const INR=n=>'\u20b9'+Math.round(n).toLocaleString('en-IN');
+const CATS=['Food','Transport','Bills','Health','Fun','Shopping','Learning','Other'];
+const todayYM=()=>TD.slice(0,7);
+const mkEl=(tag,cls,txt)=>{const e=document.createElement(tag);if(cls)e.className=cls;if(txt!=null)e.textContent=txt;return e};
+function monthExp(ym){return S.exp.filter(e=>e.d.slice(0,7)===ym)}
+function budget(){return Math.max(0,(+S.fin.income||0)-(+S.fin.save||0))}
+function mstats(ym){const sp=monthExp(ym).reduce((t,e)=>t+e.a,0);const b=budget();return {sp:sp,b:b,left:b-sp}}
+function shortDate(d){const x=new Date(d+'T00:00:00');return x.toLocaleDateString(undefined,{day:'numeric',month:'short'})}
+function drawMoney(){
+ const xm=$('#xm');if(!xm)return;
+ const ym=xm.value||todayYM();
+ const st=mstats(ym);
+ const box=$('#xs');box.textContent='';
+ box.appendChild(mkEl('div','xbig',st.left>=0?INR(st.left)+' left':INR(-st.left)+' over'));
+ const sub=mkEl('div','msg','of '+INR(st.b)+' to spend ('+INR(S.fin.income)+' income minus '+INR(S.fin.save)+' saved). Spent '+INR(st.sp)+'.');sub.style.margin='4px 0 0';box.appendChild(sub);
+ const bar=mkEl('div','bar');const fill=mkEl('div','fill'+(st.sp>st.b?' over':st.sp>st.b*.8?' warn':''));
+ fill.style.width=Math.min(100,st.b?st.sp/st.b*100:(st.sp?100:0))+'%';bar.appendChild(fill);box.appendChild(bar);
+ if(ym===todayYM()){
+  const parts=ym.split('-').map(Number);const dim=new Date(parts[0],parts[1],0).getDate();const dl=dim-new Date().getDate()+1;
+  box.appendChild(mkEl('p','msg',st.left>0?'About '+INR(st.left/dl)+' a day for the remaining '+dl+' days.':'This month\u2019s budget is used up. That is information, not a verdict. Look at where it went below.'));
+ }
+ // categories
+ const cb=$('#xcat');cb.textContent='';
+ const tot={};monthExp(ym).forEach(e=>{tot[e.c]=(tot[e.c]||0)+e.a});
+ const rows=Object.keys(tot).sort((a,b)=>tot[b]-tot[a]);const mx=rows.length?tot[rows[0]]:1;
+ rows.forEach(c=>{const r=mkEl('div','frow');r.appendChild(mkEl('span',null,c));const b=mkEl('div','b');const i=document.createElement('i');i.style.width=(tot[c]/mx*100)+'%';b.appendChild(i);r.appendChild(b);r.appendChild(mkEl('span',null,INR(tot[c])));cb.appendChild(r)});
+ // list
+ const ul=$('#xl');ul.textContent='';
+ const list=monthExp(ym).slice().sort((a,b)=>a.d<b.d?1:a.d>b.d?-1:0);
+ list.forEach(e=>{
+  const li=document.createElement('li');
+  li.append(mkEl('span','msg',shortDate(e.d)),mkEl('span','tag',e.c),mkEl('span',null,e.n||''),mkEl('span','am',INR(e.a)));
+  const rm=mkEl('button','rm','Remove');rm.type='button';rm.onclick=()=>{S.exp=S.exp.filter(x=>x.id!==e.id);save();drawMoney();drawWish()};
+  li.appendChild(rm);ul.appendChild(li);
+ });
+ $('#xe').style.display=list.length?'none':'block';
+ drawGoal();
+}
+function drawGoal(){
+ const f=S.fin,box=$('#gtxt');if(!box)return;box.textContent='';
+ const amt=+f.gamt||0,sv=+f.gsaved||0;
+ const bar=mkEl('div','bar');const fill=mkEl('div','fill');fill.style.width=Math.min(100,amt?sv/amt*100:0)+'%';bar.appendChild(fill);
+ box.appendChild(mkEl('div',null,INR(sv)+' of '+INR(amt)+(f.gname?' for '+f.gname:'')));
+ box.appendChild(bar);
+ if(f.gby){
+  const c=todayYM().split('-').map(Number),t=f.gby.split('-').map(Number);
+  const mo=(t[0]-c[0])*12+(t[1]-c[1]);const rest=Math.max(0,amt-sv);
+  if(rest===0)box.appendChild(mkEl('p','msg','You have reached this goal.'));
+  else if(mo<=0)box.appendChild(mkEl('p','msg','The target month is here or past, with '+INR(rest)+' still to go.'));
+  else{
+   const need=rest/mo,plan=+f.save||0;
+   box.appendChild(mkEl('p','msg',mo+' months to go. That is about '+INR(need)+' a month. Your plan saves '+INR(plan)+' a month'+(need<=plan?', which covers it.':', so it falls short by about '+INR(need-plan)+' a month.')));
+  }
+ }
+}
+function bindFin(id,key,num){$(id).addEventListener('input',()=>{S.fin[key]=num?(parseFloat($(id).value)||0):$(id).value;save();drawMoney()})}
+function fillFin(){
+ $('#xin').value=S.fin.income;$('#xsv').value=S.fin.save;
+ $('#gn').value=S.fin.gname;$('#ga').value=S.fin.gamt;$('#gs').value=S.fin.gsaved;$('#gb').value=S.fin.gby;
+}
+bindFin('#xin','income',true);bindFin('#xsv','save',true);bindFin('#gn','gname',false);bindFin('#ga','gamt',true);bindFin('#gs','gsaved',true);bindFin('#gb','gby',false);
+$('#xm').addEventListener('change',drawMoney);
+CATS.forEach(c=>{const o=document.createElement('option');o.value=c;o.textContent=c;$('#xc').appendChild(o)});
+$('#xm').value=todayYM();$('#xd').value=TD;
+$('#xa').onclick=()=>{
+ const a=parseFloat($('#xamt').value),m=$('#xmsg');
+ if(!(a>0)){m.textContent='Enter an amount above zero.';return}
+ const d=$('#xd').value||TD;
+ S.exp.unshift({id:'e'+Date.now(),d:d,a:a,c:$('#xc').value,n:$('#xn').value.trim(),w:''});
+ save();$('#xamt').value='';$('#xn').value='';m.textContent='Added.';
+ $('#xm').value=d.slice(0,7);drawMoney();drawWish();
+};
+$('#gaddb').onclick=()=>{const a=parseFloat($('#gadd').value);if(!(a>0))return;S.fin.gsaved=(+S.fin.gsaved||0)+a;$('#gadd').value='';save();fillFin();drawMoney()};
+</script>
+<script>
+// Wishlist
+function ageDays(d){return Math.floor((new Date(TD)-new Date(d))/864e5)}
+function drawWish(){
+ const ul=$('#wilist');if(!ul)return;ul.textContent='';
+ const wait=S.wish.filter(x=>!x.b),got=S.wish.filter(x=>x.b);
+ const cur=mstats(todayYM());
+ wait.forEach(it=>{
+  const li=document.createElement('li');
+  const top=mkEl('div','row2');top.append(mkEl('strong',null,it.t),mkEl('span','am',INR(it.p)));li.appendChild(top);
+  if(it.n)li.appendChild(mkEl('div','nt2',it.n));
+  const u=parseUrl(it.u);
+  if(u){const a=mkEl('a',null,u.hostname.replace(/^www\./,'')+' \u2197');a.href=u.href;a.target='_blank';a.rel='noopener noreferrer';li.appendChild(a)}
+  const age=ageDays(it.added);
+  li.appendChild(mkEl('span','tag',age<7?'Wait '+(7-age)+' more day'+(7-age===1?'':'s')+' before deciding':'Ready to decide'));
+  if(!RO)li.appendChild(mkEl('span','tag '+(it.p<=cur.left?'ok':'no'),it.p<=cur.left?'Fits this month ('+INR(cur.left)+' left)':cur.left>0?'Over this month by '+INR(it.p-cur.left):'No room left this month'));
+  const buy=mkEl('button','btn alt','Bought it');buy.type='button';buy.style.cssText='font-size:.85rem;padding:6px 10px';
+  buy.onclick=()=>{it.b=true;it.bd=TD;S.exp.unshift({id:'e'+Date.now(),d:TD,a:it.p,c:'Shopping',n:it.t,w:it.id});save();drawMoney();drawWish()};
+  const rm=mkEl('button','rm','Remove');rm.type='button';rm.onclick=()=>{S.wish=S.wish.filter(x=>x.id!==it.id);save();drawWish()};
+  li.append(buy,rm);ul.appendChild(li);
+ });
+ $('#wiempty').style.display=wait.length?'none':'block';
+ $('#wisum').textContent=wait.length?wait.length+' waiting, '+INR(wait.reduce((t,x)=>t+x.p,0))+' in total.':'';
+ const gl=$('#wibought');gl.textContent='';
+ got.forEach(it=>{
+  const li=document.createElement('li');li.className='dn';
+  const top=mkEl('div','row2');top.append(mkEl('strong',null,it.t),mkEl('span','am',INR(it.p)));li.appendChild(top);
+  const undo=mkEl('button','rm','Undo (also removes the expense)');undo.type='button';
+  undo.onclick=()=>{it.b=false;S.exp=S.exp.filter(x=>x.w!==it.id);save();drawMoney();drawWish()};
+  li.appendChild(undo);gl.appendChild(li);
+ });
+ $('#wibe').style.display=got.length?'none':'block';
+}
+$('#wiadd').onclick=()=>{
+ const t=$('#winame').value.trim(),p=parseFloat($('#wiprice').value),m=$('#wimsg');
+ if(!t){m.textContent='Give it a name first.';return}
+ if(!(p>=0)){m.textContent='Add a price (a rough one is fine).';return}
+ const lk=$('#wilink').value.trim();
+ if(lk&&!parseUrl(lk)){m.textContent='That link does not look right. Leave it empty or paste a full link.';return}
+ S.wish.unshift({id:'w'+Date.now(),t:t,p:p,u:lk?parseUrl(lk).href:'',n:$('#winote').value.trim(),added:TD,b:false});
+ save();['#winame','#wiprice','#wilink','#winote'].forEach(i=>$(i).value='');m.textContent='Added. Check back in a week.';drawWish();
+};
+</script>
+<script>
+// ===== Sync, sharing, halwa<3 =====
+function DEFAULTS(){return {date:'',m:{t:'',s:'',m:'',d:false},o:[{t:'',d:false},{t:'',d:false}],later:[],anchor:'',days:[],leave:{a:'',t:'',g:''},hist:{},weeks:[],refl:{h:'',c:''},daily:[],dd:{},insp:[],fin:{income:0,save:0,gname:'',gamt:0,gsaved:0,gby:''},exp:[],wish:[],yest:null,_ts:0}}
+function renderAll(){
+ fillToday();drawLater();drawDaily();drawAnchor();drawWrap();fillFin();drawMoney();drawWish();
+ $('#ah').value=S.anchor;$('#ar').value=S.leave.a;$('#tr').value=S.leave.t;$('#gr').value=S.leave.g;calc();
+ drawInsp();drawHalwaText();
+}
+function rollover(){
+ if(S.date!==TD){
+  if(S.date&&(S.m.t.trim()||S.m.s.trim()||S.m.m.trim()||S.o.some(x=>x.t.trim())))S.yest={date:S.date,m:S.m,o:S.o};
+  S.date=TD;S.m={t:'',s:'',m:'',d:false};S.o=[{t:'',d:false},{t:'',d:false}];
+ }
+}
+const niceDay=d=>new Date(d+'T00:00:00').toLocaleDateString(undefined,{weekday:'short',day:'numeric',month:'short'});
+function drawYest(){
+ const b=$('#yest');if(!b)return;
+ const y=S.yest,ok=!!(y&&y.date&&y.date!==TD&&!RO);
+ b.hidden=!ok;
+ if(ok){const yd=ymd(new Date(Date.now()-864e5));b.textContent=(y.date===yd?'Bring back yesterday\u2019s list':'Bring back my last list')+' ('+niceDay(y.date)+')'}
+}
+let yT=null;
+$('#yest').onclick=()=>{
+ const b=$('#yest'),y=S.yest;if(!y)return;
+ const has=S.m.t.trim()||S.m.s.trim()||S.m.m.trim()||S.o.some(x=>x.t.trim());
+ if(has&&!b.dataset.arm){b.dataset.arm='1';b.textContent='Tap again to replace today\u2019s list';clearTimeout(yT);yT=setTimeout(()=>{delete b.dataset.arm;drawYest()},3000);return}
+ delete b.dataset.arm;
+ S.m=JSON.parse(JSON.stringify(y.m));S.o=JSON.parse(JSON.stringify(y.o));
+ save();fillToday();
+};
+</script>
+<script>
+// --- cloud ---
+const sync=t=>{const e=$('#sync');if(e)e.textContent=t};
+const byAt=(a,b)=>(b.at||0)-(a.at||0);
+let SYNCED={},MSYNC='',coreTimer=null,coreBusy=false,coreAgain=false;
+let dirty=false,retries=0;
+const clone=o=>JSON.parse(JSON.stringify(o));
+let PM='';
+function pinStat(msg){if(msg!==undefined)PM=msg;const e=$('#bsync');if(!e)return;const n=S.insp.length+' pin'+(S.insp.length===1?'':'s');e.textContent=RO?'Viewing as a guest':(DB?n+' \u00b7 '+(PM||'saved to GitHub'):n+' \u00b7 saved on this device only')}
+function cloudSoon(){if(!DB||RO)return;dirty=true;clearTimeout(coreTimer);sync('Saving...');pinStat('saving...');coreTimer=setTimeout(pushCloud,PUSHDELAY)}
+window.addEventListener('beforeunload',e=>{if(dirty&&DB&&!RO){e.preventDefault();e.returnValue=''}});
+async function pushCloud(){
+ if(coreBusy){coreAgain=true;return}
+ coreBusy=true;
+ const bad=[];let err=null;
+ try{
+  const ids=new Set(S.insp.map(i=>i.id));
+  for(const it of S.insp){
+   const j=JSON.stringify(it);
+   if(SYNCED[it.id]!==j){try{await DB.doc('insp/'+it.id).set(JSON.parse(j));SYNCED[it.id]=j}catch(e){bad.push(e&&e.code?e.code:'error')}}
+  }
+  const mj=JSON.stringify({exp:S.exp,fin:S.fin});
+  if(mj.length>240000)throw new Error('big');
+  if(MSYNC!==mj){await DB.doc('private/money').set({json:mj,ts:S._ts||Date.now()});MSYNC=mj}
+  const c=Object.assign({},S);delete c.insp;delete c.exp;delete c.fin;const js=JSON.stringify(c);
+  if(js.length>240000)throw new Error('big');
+  await DB.doc('app/core').set({json:js,ts:S._ts||Date.now()});
+  for(const id of Object.keys(SYNCED)){if(!ids.has(id)){try{await DB.doc('insp/'+id).delete();delete SYNCED[id]}catch(e){}}}
+ }catch(e){err=e}
+ coreBusy=false;
+ if(err||bad.length){
+  const why=err&&err.message==='big'?'too much data':(err&&err.code)||bad[0]||'error';
+  sync('Not fully saved ('+why+'). Your work is kept on this device and will retry.');pinStat('NOT saved yet ('+why+'), retrying');saveBar('error',why);
+  if(++retries<=6)coreTimer=setTimeout(pushCloud,8000);
+ }else{dirty=false;retries=0;sync('Saved to GitHub');pinStat('');$('#savebar').hidden=true}
+ if(coreAgain){coreAgain=false;cloudSoon()}
+}
+let HIM=[],MYHIM={likes:{},notes:{}},LOVE=store.get('ost_love',[]);
+function subShared(){
+ DB.collection('him').onSnapshot(sn=>{
+  HIM=sn.docs.map(d=>Object.assign({id:d.id},clone(d.data())));
+  const m=HIM.find(d=>d.id===UID);if(m&&!ISOWNER)MYHIM={likes:m.likes||{},notes:m.notes||{}};
+  drawInsp();
+ },()=>{});
+ DB.doc('love/notes').onSnapshot(d=>{if(d.exists&&Array.isArray(d.data().list))LOVE=clone(d.data().list);else if(!ISOWNER)LOVE=[];drawHalwaText()},()=>{});
+ DB.collection('strokes').onSnapshot(sn=>{
+  const o={};sn.docs.forEach(d=>{const arr=hbParse(d.data().s);if(d.id===UID){if(!HB.loaded){HB.loaded=true;const have=new Set(HB.mine.map(x=>x.t));arr.forEach(x=>{if(!have.has(x.t))HB.mine.push(x)});HB.mine.sort((a,b)=>a.t-b.t)}}else o[d.id]=arr});
+  HB.others=o;hbRedraw();$('#hball').hidden=!(ISOWNER&&Object.keys(o).length);
+ },()=>{});
+}
+async function startOwner(){
+ const [cd,items,md]=await Promise.all([DB.doc('app/core').get(),DB.collection('insp').get(),DB.doc('private/money').get()]);
+ let cloud=null,cts=0;
+ if(cd.exists){try{cloud=JSON.parse(cd.data().json);cts=cd.data().ts||0}catch(e){cloud=null}}
+ let money=null,mts=0,mraw='';
+ if(md.exists){try{mraw=md.data().json;money=JSON.parse(mraw);mts=md.data().ts||0}catch(e){money=null}}
+ else if(cloud&&(cloud.exp||cloud.fin)){money={exp:cloud.exp||[],fin:cloud.fin||null};mts=cts}
+ const cItems=items.docs.map(d=>clone(d.data()));
+ const localInsp=S.insp||[],localExp=S.exp,localFin=S.fin;
+ const cloudWins=!!(cloud&&(cts>=(S._ts||0)||!LSOK||SKIPPED));
+ if(cloudWins){S=Object.assign(DEFAULTS(),cloud);S._ts=cts}
+ if(money&&(cloudWins||mts>(S._ts||0))){S.exp=Array.isArray(money.exp)?money.exp:[];S.fin=Object.assign(DEFAULTS().fin,money.fin||{})}
+ else if(cloudWins){S.exp=localExp||[];S.fin=localFin||DEFAULTS().fin}
+ MSYNC=mraw;
+ const merged=new Map();
+ localInsp.forEach(i=>merged.set(i.id,i));
+ cItems.forEach(i=>{if(cloudWins||!merged.has(i.id))merged.set(i.id,i)});
+ S.insp=[...merged.values()];
+ S.insp.forEach((i,k)=>{if(!i.at)i.at=Date.now()-k*1000});
+ S.insp.sort(byAt);
+ items.docs.forEach(d=>{SYNCED[d.id]=JSON.stringify(clone(d.data()))});
+ rollover();renderAll();store.set('ost1',S);
+ subShared();
+ pinStat('');
+ const legacy=!!(cloud&&(cloud.exp||cloud.fin));
+ if(!cd.exists||!cloudWins||legacy||JSON.stringify({exp:S.exp,fin:S.fin})!==MSYNC||S.insp.some(i=>SYNCED[i.id]!==JSON.stringify(i)))cloudSoon();else sync('Saved to GitHub');
+}
+async function startGuest(){
+ RO=true;document.body.classList.add('ro');
+ ['today','focus','leave','anchor','wrap','exp','wish'].forEach(id=>{const e=$('#'+id);if(e)e.inert=true});
+ $('#robar').hidden=false;
+ S=DEFAULTS();renderAll();pinStat();
+ DB.doc('app/core').onSnapshot(d=>{if(d.exists){try{const c=JSON.parse(d.data().json);delete c.exp;delete c.fin;S=Object.assign(DEFAULTS(),c,{insp:S.insp});renderAll()}catch(e){}}},()=>{});
+ DB.collection('insp').onSnapshot(sn=>{S.insp=sn.docs.map(x=>clone(x.data())).sort(byAt);drawInsp();pinStat()},()=>{});
+ subShared();
+ sync('Viewing as a guest');
+ const hb=document.querySelector('nav button[data-t="halwa"]');if(hb)hb.click();
+}
+let SKIPPED=false,PUSHDELAY=2500;
+function saveBar(kind,detail){
+ const T={
+  setup:'GitHub is not connected yet, so entries are only kept in this browser and may vanish when you refresh. Open GitHub settings to connect your repositories.',
+  bad_token:'GitHub did not accept your token. It may have expired or been mistyped. Update it in GitHub settings.',
+  not_found:'GitHub could not find a repository, or your token does not include it. Check the repository names and the token in GitHub settings.',
+  no_token:'A GitHub token is missing for part of the app. Open GitHub settings and add it.',
+  forbidden:'GitHub refused this change. Your token may only have read access to that repository.',
+  rate_limited:'GitHub says there were too many requests. It will retry shortly.',
+  network:'Could not reach GitHub (are you offline?). Entries are kept in this browser for now and will retry.',
+  blocked:'Nothing is being saved: this browser blocks storage and GitHub is not connected.'
+ };
+ const key=(kind==='error'&&T[detail])?detail:kind;
+ $('#savemsg').textContent=T[key]?(T[key]+((kind!=='error'&&detail)?' (Problem with '+detail+'.)':'')):('Saving to GitHub failed'+(detail?' ('+detail+')':'')+'. Entries are kept in this browser for now.');
+ $('#savefix').hidden=false;
+ $('#savebar').hidden=false;
+}
+$('#savehide').onclick=()=>{$('#savebar').hidden=true};
+$('#savefix').onclick=()=>openSetup();
+$('#ghopen').onclick=()=>openSetup();
+$('#savetest').onclick=async()=>{
+ const m=$('#savetestmsg');m.textContent='Testing...';
+ try{
+  if(RO)throw {code:'guest',message:'guests cannot save'};
+  if(!DB)throw {code:'not_connected',message:'GitHub is not connected'+(LSOK?'':', and this browser blocks storage')};
+  const t=String(Date.now());await DB.doc('app/ping').set({t:t});const r=await DB.doc('app/ping').get();
+  m.textContent=(r.exists&&r.data().t===t)?'Passed: saving to GitHub works.':'It wrote but could not read back.';
+ }catch(e){m.textContent='Failed ('+((e&&e.code)||'error')+'): '+((e&&e.message)||'')}
+};
+
+// ===== GitHub storage: every "document" is a JSON file in one of three repositories =====
+const CFGKEY='ost_gh';
+function loadCfg(){try{const c=JSON.parse(localStorage.getItem(CFGKEY)||'null');return c&&c.user&&c.tokens?c:null}catch(e){return null}}
+function makeGH(cfg){
+ const API='https://api.github.com';
+ const enc=s=>btoa(unescape(encodeURIComponent(s)));
+ const dec=b=>decodeURIComponent(escape(atob(String(b).replace(/\s/g,''))));
+ const where=p=>{const t=p.split('/')[0];return t==='private'?'money':(t==='him'||t==='strokes')?'halwa':'data'};
+ const epath=p=>p.split('/').map(encodeURIComponent).join('/');
+ const ET={},SHA={},DOC={},QUEUE={};
+ const tokOf=k=>cfg.tokens[k]||(cfg.role!=='guest'?cfg.tokens.data:'');
+ const err=(code,msg)=>{const e=new Error(msg||code);e.code=code;return e};
+ async function req(k,method,url,body,extra){
+  const tok=tokOf(k);
+  if(!tok)throw err('no_token','No GitHub token is set for the '+k+' repository');
+  try{
+   return await fetch(API+'/repos/'+encodeURIComponent(cfg.user)+'/'+encodeURIComponent(cfg.repos[k])+url,{method:method,cache:'no-store',headers:Object.assign({'Authorization':'Bearer '+tok,'Accept':'application/vnd.github+json','X-GitHub-Api-Version':'2022-11-28'},extra||{}),body:body?JSON.stringify(body):undefined});
+  }catch(e){throw err('network','Could not reach GitHub')}
+ }
+ async function fail(res){
+  let m='';try{m=(await res.json()).message||''}catch(e){}
+  if(res.status===401)return err('bad_token',m||'Bad credentials');
+  if(res.status===403&&res.headers.get('x-ratelimit-remaining')==='0')return err('rate_limited',m);
+  if(res.status===403)return err('forbidden',m||'Forbidden');
+  if(res.status===404)return err('not_found',m||'Not found');
+  return err('http_'+res.status,m);
+ }
+ async function readFile(k,path){
+  const key=k+':'+path,c=ET[key];
+  const res=await req(k,'GET','/contents/'+epath(path),null,c?{'If-None-Match':c.etag}:null);
+  if(res.status===304)return c.val;
+  if(res.status===404){delete ET[key];delete SHA[key];return null}
+  if(!res.ok)throw await fail(res);
+  const j=await res.json();
+  let text;
+  if(j.content&&j.encoding==='base64')text=dec(j.content);
+  else{const r2=await req(k,'GET','/contents/'+epath(path),null,{'Accept':'application/vnd.github.raw+json'});if(!r2.ok)throw await fail(r2);text=await r2.text()}
+  const val={sha:j.sha,data:JSON.parse(text)};
+  const et=res.headers.get('ETag');if(et)ET[key]={etag:et,val:val};
+  SHA[key]=j.sha;return val;
+ }
+ function enqueue(k,fn){const run=(QUEUE[k]||Promise.resolve()).catch(()=>{}).then(fn);QUEUE[k]=run;return run}
+ function writeFile(k,path,obj){
+  return enqueue(k,async()=>{
+   const key=k+':'+path;
+   for(let a=0;a<4;a++){
+    let sha=SHA[key];
+    if(sha===undefined){const g=await readFile(k,path);sha=g?g.sha:null}
+    const body={message:'sytm: save '+path,content:enc(JSON.stringify(obj))};if(sha)body.sha=sha;
+    const res=await req(k,'PUT','/contents/'+epath(path),body);
+    if(res.ok){const j=await res.json();SHA[key]=j.content.sha;delete ET[key];DOC[key]={sha:j.content.sha,val:obj};return}
+    if(res.status===409||res.status===422){delete SHA[key];delete ET[key];continue}
+    throw await fail(res);
+   }
+   throw err('conflict','GitHub kept reporting a conflict');
+  });
+ }
+ function deleteFile(k,path){
+  return enqueue(k,async()=>{
+   const key=k+':'+path;
+   for(let a=0;a<3;a++){
+    let sha=SHA[key];
+    if(sha===undefined){const g=await readFile(k,path);if(!g)return;sha=g.sha}
+    const res=await req(k,'DELETE','/contents/'+epath(path),{message:'sytm: delete '+path,sha:sha});
+    if(res.ok||res.status===404){delete SHA[key];delete ET[key];delete DOC[key];return}
+    if(res.status===409||res.status===422){delete SHA[key];delete ET[key];continue}
+    throw await fail(res);
+   }
+  });
+ }
+ async function listDir(k,dir){
+  const key=k+':dir:'+dir,c=ET[key];
+  const res=await req(k,'GET','/contents/'+epath(dir),null,c?{'If-None-Match':c.etag}:null);
+  if(res.status===304)return c.val;
+  if(res.status===404){delete ET[key];return []}
+  if(!res.ok)throw await fail(res);
+  const j=await res.json();
+  const val=Array.isArray(j)?j.filter(f=>f.type==='file'&&/\.json$/.test(f.name)).map(f=>({name:f.name,sha:f.sha,path:f.path})):[];
+  const et=res.headers.get('ETag');if(et)ET[key]={etag:et,val:val};
+  return val;
+ }
+ async function readCol(k,dir){
+  const files=await listDir(k,dir),out=[];
+  for(let i=0;i<files.length;i+=4){
+   const part=await Promise.all(files.slice(i,i+4).map(async f=>{
+    const key=k+':'+f.path,c=DOC[key],id=f.name.replace(/\.json$/,'');
+    if(c&&c.sha===f.sha)return {id:id,val:c.val};
+    const res=await req(k,'GET','/contents/'+epath(f.path),null,{'Accept':'application/vnd.github.raw+json'});
+    if(!res.ok)throw await fail(res);
+    const val=JSON.parse(await res.text());DOC[key]={sha:f.sha,val:val};SHA[key]=f.sha;
+    return {id:id,val:val};
+   }));
+   part.forEach(x=>out.push(x));
+  }
+  return {files:files,items:out};
+ }
+ function poll(fetcher,next,onerr){
+  let alive=true,last=null,timer=null;
+  const tick=async()=>{
+   if(!alive)return;
+   if(!document.hidden){try{const r=await fetcher();if(r.sig!==last){last=r.sig;next(r.v)}}catch(e){if(onerr)onerr(e)}}
+   if(alive)timer=setTimeout(tick,20000);
+  };
+  tick();
+  return ()=>{alive=false;clearTimeout(timer)};
+ }
+ const snapOf=(id,val)=>({id:id,exists:val!==null&&val!==undefined,data:()=>val==null?undefined:JSON.parse(JSON.stringify(val)),metadata:{}});
+ function docRef(path){
+  const k=where(path),file='store/'+path+'.json',id=path.split('/').pop();
+  return {id:id,path:path,
+   get:async()=>{const r=await readFile(k,file);return snapOf(id,r?r.data:null)},
+   set:v=>writeFile(k,file,v),
+   delete:()=>deleteFile(k,file),
+   onSnapshot:(next,onerr)=>poll(async()=>{const r=await readFile(k,file);return {sig:r?r.sha:'none',v:snapOf(id,r?r.data:null)}},next,onerr)};
+ }
+ function colRef(path){
+  const k=where(path+'/x'),dir='store/'+path;
+  const snap=async()=>{const r=await readCol(k,dir);return {sig:r.files.map(f=>f.name+':'+f.sha).join('|'),v:{docs:r.items.map(i=>snapOf(i.id,i.val)),size:r.items.length,empty:!r.items.length,docChanges:()=>[],metadata:{}}}};
+  return {path:path,get:async()=>(await snap()).v,onSnapshot:(next,onerr)=>poll(snap,next,onerr),doc:id=>docRef(path+'/'+id)};
+ }
+ async function check(){
+  const out=[];
+  for(const k of ['data','money','halwa']){
+   if(!tokOf(k)){out.push({k:k,state:'no token'});continue}
+   try{
+    const r=await req(k,'GET','');
+    if(r.ok)out.push({k:k,state:'ok'});
+    else{const e=await fail(r);out.push({k:k,state:e.code,message:e.message})}
+   }catch(e){out.push({k:k,state:e.code||'error',message:e.message})}
+  }
+  return out;
+ }
+ return {db:{doc:docRef,collection:colRef},check:check};
+}
+
+// --- settings screen ---
+let ghRole='owner';
+function ghFill(){
+ const c=loadCfg()||{user:'',role:'owner',repos:{data:'sytm-data',money:'sytm-money',halwa:'sytm-halwa'},tokens:{data:'',money:'',halwa:''}};
+ ghRole=c.role==='guest'?'guest':'owner';
+ document.querySelectorAll('#ghrole button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.v===ghRole));
+ $('#ghuser').value=c.user;$('#ghd').value=c.repos.data;$('#ghm').value=c.repos.money;$('#ghh').value=c.repos.halwa;
+ $('#tkd').value=c.tokens.data;$('#tkm').value=c.tokens.money;$('#tkh').value=c.tokens.halwa;
+ $('#ghmsg').textContent='';
+}
+function ghRead(){
+ const tk=id=>$(id).value.trim();
+ const cfg={user:tk('#ghuser'),role:ghRole,repos:{data:tk('#ghd')||'sytm-data',money:tk('#ghm')||'sytm-money',halwa:tk('#ghh')||'sytm-halwa'},tokens:{data:tk('#tkd'),money:tk('#tkm'),halwa:tk('#tkh')}};
+ if(cfg.role==='owner'){if(!cfg.tokens.money)cfg.tokens.money=cfg.tokens.data;if(!cfg.tokens.halwa)cfg.tokens.halwa=cfg.tokens.data}
+ else cfg.tokens.money='';
+ return cfg;
+}
+function openSetup(){ghFill();$('#ghset').hidden=false}
+document.querySelectorAll('#ghrole button').forEach(b=>b.onclick=()=>{ghRole=b.dataset.v;document.querySelectorAll('#ghrole button').forEach(x=>x.setAttribute('aria-pressed',x===b))});
+$('#ghclose').onclick=()=>{$('#ghset').hidden=true};
+$('#ghsave').onclick=()=>{
+ const cfg=ghRead();
+ if(!cfg.user||!cfg.tokens.data){$('#ghmsg').textContent='Enter your GitHub username and at least the data repository token.';return}
+ try{localStorage.setItem(CFGKEY,JSON.stringify(cfg))}catch(e){$('#ghmsg').textContent='This browser is blocking storage, so the settings cannot be kept.';return}
+ location.reload();
+};
+$('#ghtest').onclick=async()=>{
+ const cfg=ghRead(),m=$('#ghmsg');
+ if(!cfg.user){m.textContent='Enter your GitHub username first.';return}
+ m.textContent='Checking...';
+ try{
+  const res=await makeGH(cfg).check();
+  m.textContent=res.map(r=>({data:'Data',money:'Money',halwa:'Halwa'}[r.k])+': '+(r.state==='ok'?'connected':r.state==='no token'?'no token':'problem ('+r.state+')')).join('  \u00b7  ');
+ }catch(e){m.textContent='Could not check: '+(e.message||e)}
+};
+$('#ghout').onclick=()=>{try{localStorage.removeItem(CFGKEY)}catch(e){}location.reload()};
+async function initCloud(){
+ try{localStorage.setItem('ost_t','1');localStorage.removeItem('ost_t')}catch(e){LSOK=false}
+ const cfg=loadCfg();
+ if(!cfg){sync(LSOK?'Not connected to GitHub yet':'Not saving: this browser blocks storage');saveBar(LSOK?'setup':'blocked');if(LSOK)openSetup();return}
+ ISOWNER=cfg.role!=='guest';UID=ISOWNER?'owner':'him';
+ const gh=makeGH(cfg);DB=gh.db;
+ const ld=$('#loading');ld.hidden=false;sync('Loading from GitHub...');
+ const t1=setTimeout(()=>{$('#lgo').hidden=false;$('#lmsg').textContent='Still loading from GitHub...'},3000);
+ const rel=setTimeout(()=>{ld.hidden=true},15000);
+ $('#lgo').onclick=()=>{SKIPPED=true;ld.hidden=true};
+ try{
+  const need=ISOWNER?['data','money','halwa']:['data'];
+  const chk=await gh.check();
+  const bad=chk.find(r=>need.indexOf(r.k)>-1&&r.state!=='ok');
+  if(bad){const e=new Error(bad.message||bad.state);e.code=bad.state==='no token'?'no_token':bad.state;e.detail='the '+cfg.repos[bad.k]+' repository';throw e}
+  if(!ISOWNER)await startGuest();
+  else{await startOwner();$('#savebar').hidden=true}
+ }catch(e){const code=e&&e.code;DB=null;sync('Could not load from GitHub. Saved in this browser only.');saveBar(code||'error',e&&e.detail)}
+ clearTimeout(t1);clearTimeout(rel);ld.hidden=true;
+}
+</script>
+<script>
+// --- him: likes and notes on pins ---
+function himDocs(){return ISOWNER?HIM.filter(d=>d.id!==UID):HIM.filter(d=>d.id===UID)}
+function himOn(id){let liked=false;const notes=[];himDocs().forEach(d=>{if(d.likes&&d.likes[id])liked=true;if(d.notes&&d.notes[id])notes.push(d.notes[id])});return {liked:liked,note:notes.join(' / ')}}
+let hSel=null,hT=null;
+function himSave(){
+ const i=HIM.findIndex(d=>d.id===UID);const doc={id:UID,likes:MYHIM.likes,notes:MYHIM.notes};
+ if(i>-1)HIM[i]=doc;else HIM.push(doc);
+ clearTimeout(hT);
+ hT=setTimeout(async()=>{
+  if(!DB||!UID){$('#hmsg').textContent='Saved on this device only.';return}
+  try{await DB.doc('him/'+UID).set({likes:MYHIM.likes,notes:MYHIM.notes});$('#hmsg').textContent=''}
+  catch(e){$('#hmsg').textContent='This could not be saved. Check that your GitHub token for the halwa repository can write to it.'}
+ },500);
+}
+function paintLike(){const on=!!MYHIM.likes[hSel];$('#hlike').textContent=(on?'\u2665 Liked':'\u2661 Like')}
+function selectHim(id){
+ hSel=id;paintLike();$('#hnote2').value=MYHIM.notes[id]||'';$('#hmsg').textContent='';
+ document.querySelectorAll('#ig .pn').forEach(e=>e.classList.toggle('sel',e.dataset.id===id));
+ $('#hctl').hidden=false;$('#insp').classList.add('editing');
+}
+$('#hlike').onclick=()=>{if(!hSel)return;if(MYHIM.likes[hSel])delete MYHIM.likes[hSel];else MYHIM.likes[hSel]=true;paintLike();himSave();drawInsp()};
+$('#hnote2').addEventListener('input',()=>{if(!hSel)return;const v=$('#hnote2').value.trim();if(v)MYHIM.notes[hSel]=v;else delete MYHIM.notes[hSel];himSave();clearTimeout(window.__hr);window.__hr=setTimeout(drawInsp,500)});
+$('#hdone').onclick=()=>deselect();
+</script>
+<script>
+// --- halwa<3 ---
+function flowersSvg(){
+ const g='#6f9b7b',g2='#8fb79a';
+ const pet=(cx,cy,r,col,n,cc)=>{let s='';for(let i=0;i<n;i++)s+='<ellipse cx="'+cx+'" cy="'+(cy-r*0.62)+'" rx="'+(r*0.3)+'" ry="'+(r*0.55)+'" fill="'+col+'" stroke="rgba(90,52,20,.22)" stroke-width="1" transform="rotate('+(i*360/n)+' '+cx+' '+cy+')"/>';return s+'<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*0.3)+'" fill="'+cc+'"/>'};
+ let s='<svg viewBox="0 0 120 200" xmlns="http://www.w3.org/2000/svg" role="presentation">';
+ s+='<g fill="none" stroke="'+g+'" stroke-width="3" stroke-linecap="round"><path d="M60 196 C58 150 46 112 40 82"/><path d="M60 196 C62 140 72 100 82 78"/><path d="M60 196 C60 150 62 80 62 52"/><path d="M60 196 C50 160 30 140 22 112"/><path d="M60 196 C72 165 92 150 100 124"/></g>';
+ s+='<g fill="'+g2+'"><ellipse cx="46" cy="160" rx="5" ry="14" transform="rotate(-50 46 160)"/><ellipse cx="76" cy="158" rx="5" ry="14" transform="rotate(50 76 158)"/><ellipse cx="58" cy="128" rx="4" ry="11" transform="rotate(-20 58 128)"/></g>';
+ s+=pet(40,66,24,'#fffdf7',10,'#f5cf43');s+=pet(62,36,18,'#f4b3c4',9,'#f08a8a');
+ s+='<path d="M68 72 C66 52 76 44 82 38 C88 44 98 52 96 72 Q82 84 68 72Z" fill="#de6f66"/><path d="M82 38 C78 50 78 66 82 78 C86 66 86 50 82 38Z" fill="#ef9d93"/>';
+ s+=pet(22,108,9,'#c9b6e0',6,'#fff');s+=pet(100,120,9,'#c9b6e0',6,'#fff');
+ return s+'</svg>';
+}
+const FLOWERS=['Daisy','Pink daisy','Red tulip','Yellow tulip','Sunflower','Poppy','Cosmos','Bluebells'];
+function dayFlower(i){
+ const g='#6f9b7b',g2='#8fb79a';
+ const pet=(cx,cy,r,col,n,cc)=>{let t='';for(let k=0;k<n;k++)t+='<ellipse cx="'+cx+'" cy="'+(cy-r*0.62)+'" rx="'+(r*0.3)+'" ry="'+(r*0.55)+'" fill="'+col+'" stroke="rgba(90,52,20,.22)" stroke-width="1" transform="rotate('+(k*360/n)+' '+cx+' '+cy+')"/>';return t+'<circle cx="'+cx+'" cy="'+cy+'" r="'+(r*0.3)+'" fill="'+cc+'"/>'};
+ const tulip=(a,b)=>'<path d="M34 52 C32 30 42 22 50 14 C58 22 68 30 66 52 Q50 66 34 52Z" fill="'+a+'"/><path d="M50 14 C46 28 46 46 50 60 C54 46 54 28 50 14Z" fill="'+b+'"/>';
+ const poppy='<g fill="#f08a5d" stroke="rgba(90,52,20,.2)"><circle cx="38" cy="38" r="17"/><circle cx="62" cy="38" r="17"/><circle cx="38" cy="58" r="17"/><circle cx="62" cy="58" r="17"/></g><circle cx="50" cy="48" r="7" fill="#4a2c20"/>';
+ const bells='<g fill="#9a74c9" stroke="rgba(60,30,100,.25)"><ellipse cx="38" cy="34" rx="8" ry="11" transform="rotate(-20 38 34)"/><ellipse cx="60" cy="42" rx="8" ry="11" transform="rotate(18 60 42)"/><ellipse cx="38" cy="58" rx="8" ry="11" transform="rotate(-14 38 58)"/><ellipse cx="62" cy="66" rx="7" ry="10" transform="rotate(16 62 66)"/></g>';
+ const heads=[pet(50,46,28,'#fffdf7',10,'#f5cf43'),pet(50,46,26,'#f4b3c4',10,'#f08a8a'),tulip('#de6f66','#ef9d93'),tulip('#f2c14e','#f8dc8a'),pet(50,46,30,'#f6c453',16,'#7a4a21'),poppy,pet(50,46,26,'#c9b6e0',8,'#f5cf43'),bells];
+ return '<svg viewBox="0 0 100 160" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Today\u2019s flower: '+FLOWERS[i]+'"><path d="M50 156 C50 120 50 96 50 66" fill="none" stroke="'+g+'" stroke-width="3.5" stroke-linecap="round"/><g fill="'+g2+'"><ellipse cx="38" cy="120" rx="6" ry="16" transform="rotate(-50 38 120)"/><ellipse cx="62" cy="108" rx="6" ry="16" transform="rotate(50 62 108)"/></g>'+heads[i]+'</svg>';
+}
+function saveLove(){store.set('ost_love',LOVE);if(DB&&ISOWNER)DB.doc('love/notes').set({list:LOVE}).catch(()=>sync('Could not save that note to GitHub.'))}
+let loveArm=null;
+function drawHalwaText(){
+ const f=$('#hflow');if(!f)return;
+ if(!f.firstChild)f.innerHTML=flowersSvg();
+ $('#hdate').textContent=new Date().toLocaleDateString(undefined,{weekday:'long',day:'numeric',month:'long'});
+ const hn=$('#hnote');
+ if(LOVE.length){hn.textContent=LOVE[0].t;hn.classList.remove('empty')}else{hn.textContent=RO?'A note will show up here.':'Write him a note below and it will show up here, next to the flower.';hn.classList.add('empty')}
+ $('#hnrm').hidden=RO||!LOVE.length;
+ $('#hflower').innerHTML=dayFlower(dayNum()%FLOWERS.length);$('#hflower').title='Today\u2019s flower: '+FLOWERS[dayNum()%FLOWERS.length];
+ const box=$('#hmine');box.textContent='';
+ if(LOVE.length>1){
+  box.appendChild(mkEl('h3',null,'Earlier notes'));
+  LOVE.slice(1).forEach(n=>{
+   const d=mkEl('div','hs',n.t);
+   if(!RO){const rm=mkEl('button','rm','Remove');rm.type='button';rm.onclick=()=>{if(loveArm!==n.id){loveArm=n.id;rm.textContent='Tap again to remove';return}loveArm=null;LOVE=LOVE.filter(x=>x.id!==n.id);saveLove();drawHalwaText()};d.appendChild(rm)}
+   box.appendChild(d);
+  });
+ }
+ $('#hadd').hidden=RO;
+}
+let armF=null;
+$('#hnrm').onclick=function(){if(!LOVE.length)return;if(!armF){armF=1;this.textContent='Tap again to remove';setTimeout(()=>{armF=null;this.textContent='Remove this note'},3000);return}armF=null;this.textContent='Remove this note';LOVE.shift();saveLove();drawHalwaText()};
+$('#hnadd').onclick=()=>{const v=$('#hnew').value.trim();if(!v)return;LOVE.unshift({id:'n'+Date.now(),t:v});$('#hnew').value='';saveLove();drawHalwaText()};
+</script>
+<script>
+// whiteboard
+const HB={colors:['#4a2c20','#de6f66','#f08a5d','#e8c547','#6f9b7b','#3b3e8f','#9a74c9','#fffef9'],names:['Brown','Red','Orange','Yellow','Green','Blue','Purple','Eraser'],color:'#4a2c20',w:6,others:{},mine:store.get('ost_hb',[]).length?hbParse(store.get('ost_hb',[])):[],cur:null,drawing:false};
+function hbParse(arr){return (Array.isArray(arr)?arr:[]).map(s=>({t:s.t||0,c:s.c||'#4a2c20',w:s.w||6,p:String(s.d||'').split(' ').map(q=>q.split(',').map(Number)).filter(a=>a.length===2&&!isNaN(a[0])&&!isNaN(a[1]))}))}
+function hbStroke(c,s){
+ if(!s.p.length)return;
+ c.strokeStyle=s.c;c.fillStyle=s.c;c.lineWidth=s.w;c.lineCap='round';c.lineJoin='round';
+ if(s.p.length===1){c.beginPath();c.arc(s.p[0][0],s.p[0][1],s.w/2,0,6.2832);c.fill();return}
+ c.beginPath();c.moveTo(s.p[0][0],s.p[0][1]);for(let i=1;i<s.p.length;i++)c.lineTo(s.p[i][0],s.p[i][1]);c.stroke();
+}
+function hbRedraw(){
+ const cv=$('#hb');if(!cv)return;const c=cv.getContext('2d');
+ c.fillStyle='#fffef9';c.fillRect(0,0,1000,640);
+ const all=[];Object.keys(HB.others).forEach(u=>HB.others[u].forEach(s=>all.push(s)));HB.mine.forEach(s=>all.push(s));
+ all.sort((a,b)=>a.t-b.t).forEach(s=>hbStroke(c,s));
+ if(!all.length&&!HB.cur){c.fillStyle='#d9d3c6';c.font='48px Inter, system-ui, sans-serif';c.textAlign='center';c.fillText('draw here',500,330)}
+}
+function hbEnc(){return HB.mine.map(s=>({t:s.t,c:s.c,w:s.w,d:s.p.map(a=>Math.round(a[0])+','+Math.round(a[1])).join(' ')}))}
+let hbT=null;
+function hbSave(){
+ const out=hbEnc();
+ if(JSON.stringify(out).length>230000)return false;
+ store.set('ost_hb',out);
+ if(DB&&UID){clearTimeout(hbT);hbT=setTimeout(async()=>{try{await DB.doc('strokes/'+UID).set({s:out});$('#hbmsg').textContent=''}catch(e){$('#hbmsg').textContent='Your drawing is kept on this device, but could not be shared. Drawing together needs a GitHub token that can write to the halwa repository.'}},500)}
+ return true;
+}
+(function(){
+ const tools=$('#hbtools');
+ HB.colors.forEach((col,i)=>{const b=document.createElement('button');b.type='button';b.className='sw';b.style.background=col;b.setAttribute('aria-label',HB.names[i]);b.setAttribute('aria-pressed',i===0?'true':'false');
+  b.onclick=()=>{HB.color=col;tools.querySelectorAll('.sw').forEach(x=>x.setAttribute('aria-pressed',x===b))};tools.appendChild(b)});
+ const r=document.createElement('input');r.type='range';r.min=2;r.max=40;r.value=HB.w;r.setAttribute('aria-label','Brush size');r.oninput=()=>{HB.w=+r.value};tools.appendChild(r);
+ const cv=$('#hb'),c=cv.getContext('2d');
+ const pt=e=>{const q=cv.getBoundingClientRect();return [(e.clientX-q.left)/q.width*1000,(e.clientY-q.top)/q.height*640]};
+ cv.addEventListener('pointerdown',e=>{e.preventDefault();cv.setPointerCapture(e.pointerId);HB.drawing=true;HB.cur={t:Date.now(),c:HB.color,w:HB.w,p:[pt(e)]};hbStroke(c,HB.cur)});
+ cv.addEventListener('pointermove',e=>{
+  if(!HB.cur)return;const p=pt(e),l=HB.cur.p[HB.cur.p.length-1];
+  if(Math.hypot(p[0]-l[0],p[1]-l[1])<1.5)return;
+  HB.cur.p.push(p);hbStroke(c,{c:HB.cur.c,w:HB.cur.w,p:[l,p]});
+ });
+ const up=()=>{
+  if(!HB.cur)return;const s=HB.cur;HB.cur=null;
+  if(s.p.length>140){const k=Math.ceil(s.p.length/140),last=s.p[s.p.length-1];s.p=s.p.filter((_,i)=>i%k===0);s.p.push(last)}
+  HB.mine.push(s);
+  if(!hbSave()){HB.mine.pop();$('#hbmsg').textContent='The whiteboard is full. Clear some of it to keep drawing.';hbRedraw()}
+  HB.drawing=false;
+ };
+ cv.addEventListener('pointerup',up);cv.addEventListener('pointercancel',up);
+ $('#hbundo').onclick=()=>{HB.mine.pop();hbSave();hbRedraw()};
+ let armC=null,armA=null;
+ $('#hbclr').onclick=function(){if(!armC){armC=1;this.textContent='Tap again to clear';setTimeout(()=>{armC=null;this.textContent='Clear mine'},3000);return}armC=null;this.textContent='Clear mine';HB.mine=[];hbSave();hbRedraw()};
+ $('#hball').onclick=async function(){
+  if(!armA){armA=1;this.textContent='Tap again to clear all';setTimeout(()=>{armA=null;this.textContent='Clear everyone\u2019s'},3000);return}
+  armA=null;this.textContent='Clear everyone\u2019s';HB.mine=[];hbSave();
+  for(const id of Object.keys(HB.others)){try{await DB.doc('strokes/'+id).delete()}catch(e){}}
+  HB.others={};hbRedraw();
+ };
+ hbRedraw();
+})();
+</script>
+<script>
+[rollover,fillToday,drawLater,drawDaily,function(){$('#ah').value=S.anchor;$('#ar').value=S.leave.a;$('#tr').value=S.leave.t;$('#gr').value=S.leave.g;calc()},drawAnchor,drawWrap,fillFin,drawMoney,drawWish,drawInsp,drawHalwaText,initCloud].forEach(function(f){try{var r=f();if(r&&r.catch)r.catch(window.__report)}catch(e){window.__report(e)}});
+</script></body></html>
